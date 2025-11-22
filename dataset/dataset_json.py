@@ -1,9 +1,9 @@
-if __name__ == '__main__':
-    import argparse
-    import os
-    import random
-    from util import get_subdirs
+import argparse
+import os
+import random
+from util import get_subdirs
 
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('json_dir', type=str, help='Input JSON dir')
     parser.add_argument('--dataset_dir', type=str, help='If specified, use different output dir otherwise JSON dir')
@@ -33,34 +33,32 @@ if __name__ == '__main__':
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
 
-    pack_names = get_subdirs(args.json_dir, args.choose)
+    pack_name = os.path.basename(args.json_dir)
+    pack_dir = args.json_dir
+    sub_fps = sorted(os.listdir(pack_dir))
 
-    for pack_name in pack_names:
-        pack_dir = os.path.join(args.json_dir, pack_name)
-        sub_fps = sorted(os.listdir(pack_dir))
+    if args.shuffle:
+        random.seed(args.shuffle_seed)
+        random.shuffle(sub_fps)
 
-        if args.shuffle:
-            random.seed(args.shuffle_seed)
-            random.shuffle(sub_fps)
+    if args.abs:
+        sub_fps = [os.path.abspath(os.path.join(pack_dir, sub_fp)) for sub_fp in sub_fps]
 
-        if args.abs:
-            sub_fps = [os.path.abspath(os.path.join(pack_dir, sub_fp)) for sub_fp in sub_fps]
+    if len(splits) == 0:
+        splits = [1.0]
+    else:
+        splits = [x / sum(splits) for x in splits]
 
-        if len(splits) == 0:
-            splits = [1.0]
-        else:
-            splits = [x / sum(splits) for x in splits]
+    split_ints = [int(len(sub_fps) * split) for split in splits]
+    split_ints[0] += len(sub_fps) - sum(split_ints)
 
-        split_ints = [int(len(sub_fps) * split) for split in splits]
-        split_ints[0] += len(sub_fps) - sum(split_ints)
+    split_fps = []
+    for split_int in split_ints:
+        split_fps.append(sub_fps[:split_int])
+        sub_fps = sub_fps[split_int:]
 
-        split_fps = []
-        for split_int in split_ints:
-            split_fps.append(sub_fps[:split_int])
-            sub_fps = sub_fps[split_int:]
-
-        for split, splitname in zip(split_fps, split_names):
-            out_name = '{}{}.txt'.format(pack_name, '_' + splitname if splitname else '')
-            out_fp = os.path.join(out_dir, out_name)
-            with open(out_fp, 'w') as f:
-                f.write('\n'.join(split))
+    for split, splitname in zip(split_fps, split_names):
+        out_name = '{}{}.txt'.format(pack_name, '_' + splitname if splitname else '')
+        out_fp = os.path.join(out_dir, out_name)
+        with open(out_fp, 'w') as f:
+            f.write('\n'.join(split))
