@@ -1,10 +1,13 @@
 import math
 import os
 import shutil
+import sys
+import pickle
 
 import essentia
 from essentia.standard import MetadataReader
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from scipy.signal import argrelextrema
 assert tf.__version__ == '0.12.1'
@@ -116,9 +119,35 @@ _CHART_TEMPL = """\
     DanceDanceConvolutionV1:
     {ccoarse}:
     {cfine}:
-    0.0,0.0,0.0,0.0,0.0:
+    {difficulty}:
 {measures};\
 """
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'ffr-difficulty-model', 'src', 'features'))
+from HorizontalDensity import HorizontalDensity
+from VerticalDensity import VerticalDensity
+
+_FFR_MODEL = pickle.load(open(os.path.join(
+    os.path.dirname(__file__), '..', 'ffr-difficulty-model', 'models', 'random_forest_regressor.p'), 'rb'))
+
+def calculate_difficulty(chart):
+    alpha = 3
+    vertical_density = VerticalDensity(alpha=alpha)
+    horizontal_density = HorizontalDensity(alpha=alpha)
+
+    raw_data = {}
+    raw_data['vertical'] = vertical_density.compute(chart)
+    raw_data['horizontal'] = horizontal_density.compute(chart)
+
+    features = {}
+    for feature, val in sorted(raw_data.items()):
+        if isinstance(val, dict):
+            features.update(val)
+        elif feature != 'name':
+            features[feature] = val
+
+    df = pd.DataFrame([features], columns=features.keys())
+    return _FFR_MODEL.predict(df)[0]
 
 class CreateChartException(Exception):
     pass
@@ -221,6 +250,8 @@ def create_chart_dir(
 
         print 'Creating chart text'
         time_to_step = {int(round(t * _HZ)) : step for t, step in zip(placed_times, selected_steps)}
+        difficulty = calculate_difficulty(time_to_step)
+        print 'Calculated difficulty: {}'.format(difficulty)
         max_subdiv = max(time_to_step.keys())
         if max_subdiv % _SUBDIV != 0:
             max_subdiv += _SUBDIV - (max_subdiv % _SUBDIV)
@@ -230,6 +261,7 @@ def create_chart_dir(
         chart_txt = _CHART_TEMPL.format(
             ccoarse=_DIFFS[coarse],
             cfine=fine,
+            difficulty=difficulty,
             measures=measures_txt
         )
         diff_chart_txts.append(chart_txt)
