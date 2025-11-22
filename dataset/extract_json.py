@@ -6,7 +6,7 @@ import traceback
 from smdataset.abstime import calc_note_beats_and_abs_times
 from smdataset.parse import parse_sm_txt
 
-_ATTR_REQUIRED = ['offset', 'bpms', 'notes']
+_ATTR_REQUIRED = ['bpms', 'notes']
 
 if __name__ == '__main__':
     import argparse
@@ -27,35 +27,28 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    pack_names = get_subdirs(args.packs_dir, args.choose)
-    pack_dirs = [os.path.join(args.packs_dir, pack_name) for pack_name in pack_names]
-    pack_sm_globs = [os.path.join(pack_dir, '*', '*.sm') for pack_dir in pack_dirs]
+    pack_name = os.path.basename(args.packs_dir)
+    pack_sm_glob = os.path.join(args.packs_dir, '**', '*.sm')
 
     if not os.path.isdir(args.json_dir):
         os.mkdir(args.json_dir)
 
-    pack_eznames = set()
-    for pack_name, pack_sm_glob in zip(pack_names, pack_sm_globs):
-        pack_sm_fps = sorted(glob.glob(pack_sm_glob))
-        pack_ezname = ez_name(pack_name)
-        if pack_ezname in pack_eznames:
-            raise ValueError('Pack name conflict: {}'.format(pack_ezname))
-        pack_eznames.add(pack_ezname)
+    pack_sm_fps = sorted(glob.glob(pack_sm_glob, recursive=True))
+    pack_ezname = ez_name(pack_name)
 
-        if len(pack_sm_fps) > 0:
-            pack_outdir = os.path.join(args.json_dir, pack_ezname)
-            if not os.path.isdir(pack_outdir):
-                os.mkdir(pack_outdir)
+    pack_outdir = os.path.join(args.json_dir, pack_ezname)
+    if not os.path.isdir(pack_outdir):
+        os.mkdir(pack_outdir)
 
-        sm_eznames = set()
-        for sm_fp in pack_sm_fps:
+    sm_eznames = set()
+    for sm_fp in pack_sm_fps:
             sm_name = os.path.split(os.path.split(sm_fp)[0])[1]
             sm_ezname = ez_name(sm_name)
             if sm_ezname in sm_eznames:
                 raise ValueError('Song name conflict: {}'.format(sm_ezname))
             sm_eznames.add(sm_ezname)
 
-            with open(sm_fp, 'r') as sm_f:
+            with open(sm_fp, 'r', encoding='utf-8', errors='ignore') as sm_f:
                 sm_txt = sm_f.read()
 
             # parse file
@@ -105,7 +98,7 @@ if __name__ == '__main__':
                 music_fp = os.path.join(root, sm_attrs['music'])
 
             bpms = sm_attrs['bpms']
-            offset = sm_attrs['offset']
+            offset = sm_attrs.get('offset', 0.0)
             if args.itg:
                 # Many charters add 9ms of delay to their stepfiles to account for ITG r21/r23 global delay
                 # see http://r21freak.com/phpbb3/viewtopic.php?f=38&t=12750
@@ -143,4 +136,4 @@ if __name__ == '__main__':
                     smlog.error('Unicode error in {}'.format(sm_fp))
                     continue
 
-            print 'Parsed {} - {}: {} charts'.format(pack_name, sm_name, len(out_json['charts']))
+            print('Parsed {} - {}: {} charts'.format(pack_name, sm_name, len(out_json['charts'])))
