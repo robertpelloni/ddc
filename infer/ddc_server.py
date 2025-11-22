@@ -4,18 +4,16 @@ import shutil
 import sys
 import pickle
 
-import essentia
-from essentia.standard import MetadataReader
+import librosa
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from scipy.signal import argrelextrema
-assert tf.__version__ == '0.12.1'
+import mutagen
 
 from onset_net import OnsetNet
 from sym_net import SymNet
 from util import apply_z_norm, make_onset_feature_context
-from extract_feats import extract_mel_feats
 
 def load_sp_model(sp_ckpt_fp, sess, batch_size=128):
     with tf.variable_scope('model_sp'):
@@ -97,7 +95,7 @@ _DIFF_TO_COARSE_FINE_AND_THRESHOLD = {
     'Challenge':    (4, 9, 0.28875697)
 }
 
-_SUBDIV = 192
+_SUBDIV = 128
 _DT = 0.01
 _HZ = 1.0 / _DT
 _BPM = 60 * (1.0 / _DT) * (1.0 / float(_SUBDIV)) * 4.0
@@ -107,7 +105,7 @@ _TEMPL = """\
 #ARTIST:{artist};
 #MUSIC:{music_fp};
 #OFFSET:0.0;
-#BPMS:0.0={bpm};
+#BPMS:{bpms};
 #STOPS:;
 {charts}\
 """
@@ -157,30 +155,84 @@ def weighted_pick(weights):
     s = np.sum(weights)
     return(int(np.searchsorted(t, np.random.rand(1)*s)))
 
+def calculate_difficulty(placed_times, selected_steps):
+    """
+    Calculates a difficulty rating for a chart based on step density and jumps.
+    """
+    if not placed_times:
+        return 0
+
+    num_steps = len(placed_times)
+    duration_seconds = placed_times[-1] - placed_times[0]
+    steps_per_second = num_steps / duration_seconds if duration_seconds > 0 else 0
+
+    # Count jumps (more than one arrow at a time)
+    num_jumps = sum(1 for step in selected_steps if bin(int(step, 2)).count('1') > 1)
+
+    # Simple scaling to a 1-100 rating, with jumps adding to the score
+    difficulty = min(100, int(steps_per_second * 10) + num_jumps)
+    return difficulty
+
 def create_chart_dir(
         artist, title,
         audio_fp,
-        norm, analyzers,
+        norm,
         sess,
         sp_model, sp_batch_size, diffs,
         ss_model, idx_to_label,
         out_dir, delete_audio=False):
-    if not artist or not title:
-        print 'Extracting metadata from {}'.format(audio_fp)
-        meta_reader = MetadataReader(filename=audio_fp)
-        metadata = meta_reader()
-        if not artist:
-            artist = metadata[1]
-        if not artist:
-            artist = 'Unknown Artist'
-        if not title:
-            title = metadata[0]
-        if not title:
-            title = 'Unknown Title'
+    try:
+        audio = mutagen.File(audio_fp, easy=True)
+        if audio:
+            artist = audio.get('artist', ['Unknown Artist'])[0]
+            title = audio.get('title', ['Unknown Title'])[0]
+    except:
+        pass
+
+    if not artist:
+        artist = 'Unknown Artist'
+    if not title:
+        title = 'Unknown Title'
 
     print 'Loading {} - {}'.format(artist, title)
     try:
-        song_feats = extract_mel_feats(audio_fp, analyzers, nhop=441)
+        y, sr = librosa.load(audio_fp, sr=44100)
+        tempo, beats = librosa.beat.beat_track(y=y, sr=sr, units='time')
+        beat_times = librosa.frames_to_time(beats, sr=sr)
+        first_beat = beat_times[0] if len(beat_times) > 0 else 0
+        last_beat = beat_times[-1] if len(beat_times) > 0 else 0
+        chroma = librosa.feature.chroma_cqt(y=y, sr=sr)
+        bounds = librosa.segment.agglomerative(chroma, 20)
+        sections = librosa.frames_to_time(bounds, sr=sr)
+
+        # Handle variable BPM
+        bounds_samples = librosa.frames_to_samples(bounds)
+        bpms = []
+        for i in range(len(bounds) - 1):
+            start_sample = bounds_samples[i]
+            end_sample = bounds_samples[i+1]
+            section_y = y[start_sample:end_sample]
+            if len(section_y) == 0:
+                continue
+            section_bpm = librosa.beat.tempo(y=section_y, sr=sr)
+            section_start_time = librosa.samples_to_time(start_sample, sr=sr)
+            beat_index = np.searchsorted(beat_times, section_start_time)
+            bpms.append((float(beat_index), section_bpm))
+
+        if not bpms:
+            main_bpm = librosa.beat.tempo(y=y, sr=sr)
+            bpms_str = "0.0={}".format(main_bpm)
+        else:
+            if bpms[0][0] != 0.0:
+                bpms.insert(0, (0.0, bpms[0][1]))
+            bpms_str = ",".join(["{}={:.3f}".format(beat, bpm_val) for beat, bpm_val in bpms])
+
+        hop_length = sr // 100
+        mel_spec = librosa.feature.melspectrogram(y=y, sr=sr, hop_length=hop_length, n_mels=80).T
+        mel_spec_db = librosa.power_to_db(mel_spec, ref=np.max)
+        delta = librosa.feature.delta(mel_spec_db)
+        delta2 = librosa.feature.delta(mel_spec_db, order=2)
+        song_feats = np.stack([mel_spec_db, delta, delta2], axis=-1)
     except:
         raise CreateChartException('Invalid audio file: {}'.format(audio_fp))
     song_feats -= norm[0]
@@ -215,15 +267,21 @@ def create_chart_dir(
         predictions = np.concatenate(predictions)[:song_feats.shape[0]]
         print predictions.shape
 
-        print 'Peak picking'
-        predictions_smoothed = np.convolve(predictions, np.hamming(5), 'same')
-        maxima = argrelextrema(predictions_smoothed, np.greater_equal, order=1)[0]
+        print 'Aligning steps to beats with section-based threshold'
+        beat_frames = librosa.time_to_frames(beats, sr=sr, hop_length=hop_length)
+        section_frames = librosa.time_to_frames(sections, sr=sr, hop_length=hop_length)
+        rmse = librosa.feature.rms(y=y, hop_length=hop_length)[0]
         placed_times = []
-        for i in maxima:
-            t = float(i) * _DT
-            if predictions[i] >= threshold:
-                placed_times.append(t)
-        print 'Found {} peaks, density {} steps per second'.format(len(placed_times), len(placed_times) / song_len_sec)
+        for i in range(len(section_frames) - 1):
+            start_frame = section_frames[i]
+            end_frame = section_frames[i+1]
+            section_rmse = np.mean(rmse[start_frame:end_frame])
+            section_threshold = threshold * (1 + (section_rmse - np.mean(rmse)) / np.std(rmse))
+            for beat_frame in beat_frames:
+                if start_frame <= beat_frame < end_frame:
+                    if predictions[beat_frame] >= section_threshold:
+                        placed_times.append(librosa.frames_to_time(beat_frame, sr=sr, hop_length=hop_length))
+        print 'Placed {} steps'.format(len(placed_times))
 
         print 'Performing step selection'
         state = sess.run(ss_model.initial_state)
@@ -239,6 +297,20 @@ def create_chart_dir(
                 ss_model.initial_state: state
             }
             scores, state = sess.run([ss_model.scores, ss_model.final_state], feed_dict=feed_dict)
+
+            current_time = times_arr[i]
+            current_section = 0
+            for j in range(len(sections) - 1):
+                if sections[j] <= current_time < sections[j+1]:
+                    current_section = j
+                    break
+
+            if current_section == 0: # Intro section
+                # Bias towards simpler steps
+                for step_idx, step in idx_to_label.items():
+                    if bin(int(step, 2)).count('1') > 1:
+                        scores[0][step_idx-1] *= 0.5
+
 
             step_idx = 0
             while step_idx <= 1:
@@ -256,8 +328,13 @@ def create_chart_dir(
         if max_subdiv % _SUBDIV != 0:
             max_subdiv += _SUBDIV - (max_subdiv % _SUBDIV)
         full_steps = [time_to_step.get(i, '0000') for i in xrange(max_subdiv)]
+
         measures = [full_steps[i:i+_SUBDIV] for i in xrange(0, max_subdiv, _SUBDIV)]
         measures_txt = '\n,\n'.join(['\n'.join(measure) for measure in measures])
+
+        # Calculate difficulty rating
+        difficulty_rating = calculate_difficulty(placed_times, selected_steps)
+
         chart_txt = _CHART_TEMPL.format(
             ccoarse=_DIFFS[coarse],
             cfine=fine,
@@ -273,7 +350,7 @@ def create_chart_dir(
         title=title,
         artist=artist,
         music_fp=audio_out_name,
-        bpm=_BPM,
+        bpms=bpms_str,
         charts='\n'.join(diff_chart_txts))
 
     print 'Saving to {}'.format(out_dir)
@@ -342,7 +419,7 @@ def choreograph():
             create_chart_dir(
                 song_artist, song_title,
                 song_fp,
-                NORM, ANALYZERS,
+                NORM,
                 SESS,
                 SP_MODEL, ARGS.sp_batch_size,
                 [diff_coarse],
@@ -393,8 +470,6 @@ if __name__ == '__main__':
     import uuid
     import zipfile
 
-    from extract_feats import create_analyzers
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--norm_pkl_fp', type=str)
     parser.add_argument('--sp_ckpt_fp', type=str)
@@ -428,10 +503,6 @@ if __name__ == '__main__':
     print 'Loading band norms'
     with open(ARGS.norm_pkl_fp, 'rb') as f:
         NORM = pickle.load(f)
-
-    global ANALYZERS
-    print 'Creating Mel analyzers'
-    ANALYZERS = create_analyzers(nhop=441)
 
     global IDX_TO_LABEL
     print 'Loading labels'
