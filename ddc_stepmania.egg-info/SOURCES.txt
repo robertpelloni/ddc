@@ -1,0 +1,7 @@
+LICENSE
+README.md
+setup.py
+ddc_stepmania.egg-info/PKG-INFO
+ddc_stepmania.egg-info/SOURCES.txt
+ddc_stepmania.egg-info/dependency_links.txt
+ddc_stepmania.egg-info/top_level.txt
