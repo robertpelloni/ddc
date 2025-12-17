@@ -288,4 +288,5 @@ def main():
     ac.process_song(args.audio_fp, args.out_dir)
 
 if __name__ == '__main__':
+    # Entry point for the AutoChart CLI
     main()
