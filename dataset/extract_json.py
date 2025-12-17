@@ -2,6 +2,8 @@ import glob
 import logging as smlog
 import os
 import traceback
+import json
+from collections import OrderedDict
 
 from smdataset.abstime import calc_note_beats_and_abs_times
 from smdataset.parse import parse_sm_txt
@@ -10,9 +12,6 @@ _ATTR_REQUIRED = ['bpms', 'notes']
 
 if __name__ == '__main__':
     import argparse
-    from collections import OrderedDict
-    import json
-    json.encoder.FLOAT_REPR = lambda f: ('%.6f' % f)
     from util import ez_name, get_subdirs
 
     parser = argparse.ArgumentParser()
@@ -45,7 +44,9 @@ if __name__ == '__main__':
             sm_name = os.path.split(os.path.split(sm_fp)[0])[1]
             sm_ezname = ez_name(sm_name)
             if sm_ezname in sm_eznames:
-                raise ValueError('Song name conflict: {}'.format(sm_ezname))
+                # raise ValueError('Song name conflict: {}'.format(sm_ezname))
+                smlog.warning('Song name conflict: {}, skipping duplicate'.format(sm_ezname))
+                continue
             sm_eznames.add(sm_ezname)
 
             with open(sm_fp, 'r', encoding='utf-8', errors='ignore') as sm_f:
@@ -72,7 +73,11 @@ if __name__ == '__main__':
 
             # handle missing music
             root = os.path.abspath(os.path.join(sm_fp, '..'))
-            music_fp = os.path.join(root, sm_attrs.get('music', ''))
+            music_fp_rel = sm_attrs.get('music', '')
+            if music_fp_rel is None:
+                music_fp_rel = ''
+            music_fp = os.path.join(root, music_fp_rel)
+
             if 'music' not in sm_attrs or not os.path.exists(music_fp):
                 music_names = []
                 sm_prefix = os.path.splitext(sm_name)[0]
@@ -90,7 +95,11 @@ if __name__ == '__main__':
                     elif len(music_names) == 1:
                         sm_attrs['music'] = music_names[0]
                     else:
-                        raise ValueError('Multiple music files {} found'.format(music_names))
+                        # Try to match by similarity? For now just pick first or error
+                        # raise ValueError('Multiple music files {} found'.format(music_names))
+                        # Pick the one that matches sm name best?
+                        smlog.warning('Multiple music files found, picking first: {}'.format(music_names[0]))
+                        sm_attrs['music'] = music_names[0]
                 except ValueError as e:
                     smlog.error('{}'.format(e))
                     continue
@@ -119,6 +128,7 @@ if __name__ == '__main__':
             ])
 
             for idx, sm_notes in enumerate(sm_attrs['notes']):
+                # sm_notes: (type, desc, diff_coarse, diff_fine, radar, measures)
                 note_beats_and_abs_times = calc_note_beats_and_abs_times(offset, bpms, stops, sm_notes[5])
                 notes = {
                     'type': sm_notes[0],
