@@ -20,7 +20,7 @@ from learn.util import make_onset_feature_context
 import sys
 sys.path.append(os.path.join(os.getcwd(), 'ffr-difficulty-model'))
 try:
-    from stepmania_difficulty_predictor.models.prediction_pipeline import DifficultyPredictor
+    from stepmania_difficulty_predictor.models.prediction_pipeline import ModeAgnosticDifficultyPredictor as DifficultyPredictor
 except ImportError:
     print("Warning: Could not import DifficultyPredictor. FFR rating will be disabled.")
     DifficultyPredictor = None
