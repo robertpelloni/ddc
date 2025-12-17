@@ -41,10 +41,10 @@ if __name__ == '__main__':
 
     chart_types = set([x.strip() for x in args.chart_types.split(',') if x.strip()])
     chart_difficulties = set([x.strip() for x in args.chart_difficulties.split(',') if x.strip()])
-    substitutions = [x.strip() for x in args.substitutions.split(',') if x.strip()]
-    assert len(substitutions) % 2 == 0
-    substitutions = [(substitutions[i], substitutions[i + 1]) for i in range(0, len(substitutions), 2)]
-    substitutions = {x.strip():y.strip() for x, y in substitutions}
+    substitutions_list = [x.strip() for x in args.substitutions.split(',') if x.strip()]
+    assert len(substitutions_list) % 2 == 0
+    substitutions_pairs = [(substitutions_list[i], substitutions_list[i + 1]) for i in range(0, len(substitutions_list), 2)]
+    substitutions = {x.strip():y.strip() for x, y in substitutions_pairs}
     arrow_types = set([x.strip() for x in args.arrow_types.split(',') if x.strip()])
     arrow_types.add('0')
     ppms = set([int(x.strip()) for x in args.ppms.split(',') if x.strip()])
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         print('Only accepting charts with pulses per measure: {}'.format(args.ppms))
 
     if not os.path.isdir(args.json_out_dir):
-        os.mkdir(args.json_out_dir)
+        os.makedirs(args.json_out_dir)
 
     pack_name = os.path.basename(args.json_in_dir)
     print('-' * 80)
@@ -86,8 +86,12 @@ if __name__ == '__main__':
         print(json_name)
 
         json_fp = os.path.join(pack_dir, json_name)
-        with open(json_fp, 'r', encoding='utf-8', errors='ignore') as f:
-            song_meta = json.loads(f.read())
+        try:
+            with open(json_fp, 'r', encoding='utf-8', errors='ignore') as f:
+                song_meta = json.loads(f.read())
+        except Exception as e:
+            print('Error reading {}: {}'.format(json_fp, e))
+            continue
 
         charts_accepted = []
         for chart_meta in song_meta['charts']:
@@ -99,12 +103,16 @@ if __name__ == '__main__':
                 print('Unacceptable chart difficulty: {}'.format(chart_meta['difficulty_coarse']))
                 continue
 
-            if args.min_chart_feet >= 0 and chart_meta['difficulty_fine'] < args.min_chart_feet:
-                print('Unacceptable chart feet: {}'.format(chart_meta['difficulty_fine']))
+            # Handle difficulties sometimes being strings or null? usually int.
+            diff_fine = chart_meta.get('difficulty_fine', 0)
+            if diff_fine is None: diff_fine = 0
+
+            if args.min_chart_feet >= 0 and diff_fine < args.min_chart_feet:
+                print('Unacceptable chart feet: {}'.format(diff_fine))
                 continue
 
-            if args.max_chart_feet >= 0 and chart_meta['difficulty_fine'] > args.max_chart_feet:
-                print('Unacceptable chart feet: {}'.format(chart_meta['difficulty_fine']))
+            if args.max_chart_feet >= 0 and diff_fine > args.max_chart_feet:
+                print('Unacceptable chart feet: {}'.format(diff_fine))
                 continue
 
             if len(substitutions) > 0 or args.remove_zeros:
@@ -157,7 +165,7 @@ if __name__ == '__main__':
                 notes_cleaned = []
                 for measure in measures:
                     denominator = measure[0][0][1]
-                    divisors = list( primefac.primefac(denominator))
+                    divisors = list(primefac.primefac(denominator))
                     numerators = [note[0][2] for note in measure]
                     factor = 1
                     for divisor in divisors:
@@ -191,16 +199,39 @@ if __name__ == '__main__':
                 if not acceptable:
                     continue
 
+            # Permutation Logic
+            is_double = chart_meta['type'] == 'dance-double'
+            expected_len = 8 if is_double else 4
+
             for permutation in permutations:
+                current_perm = permutation
+                if len(current_perm) != expected_len:
+                    # If using default '0123' on a double chart, promote to '01234567' (identity)
+                    if args.permutations == '0123' and is_double:
+                         current_perm = '01234567'
+                    else:
+                         # Skip incompatible permutation
+                         # print('Skipping incompatible permutation {} for chart type {}'.format(permutation, chart_meta['type']))
+                         continue
+
                 chart_meta_copy = copy.deepcopy(chart_meta)
                 notes_cleaned = []
-                for meas, beat, time, note in chart_meta_copy['notes']:
-                    note_new = ''.join([note[int(permutation[i])] for i in range(len(permutation))])
+                try:
+                    for meas, beat, time, note in chart_meta_copy['notes']:
+                        # Ensure note is long enough (it should be, but be safe)
+                        if len(note) != len(current_perm):
+                            # This might happen if 'dance-single' chart has malformed notes?
+                            # Or if we forced a permutation on mismatching note.
+                            raise IndexError("Note length mismatch")
 
-                    notes_cleaned.append((meas, beat, time, note_new))
+                        note_new = ''.join([note[int(current_perm[i])] for i in range(len(current_perm))])
+                        notes_cleaned.append((meas, beat, time, note_new))
+
                     chart_meta_copy['notes'] = notes_cleaned
-
-                charts_accepted.append(chart_meta_copy)
+                    charts_accepted.append(chart_meta_copy)
+                except IndexError:
+                    print('Permutation error on note: note len {} vs perm len {}'.format(len(note), len(current_perm)))
+                    continue
 
         charts_naccepted = len(charts_accepted)
         charts_ntotal = len(song_meta['charts'])
