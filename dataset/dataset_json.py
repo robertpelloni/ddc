@@ -62,3 +62,5 @@ if __name__ == '__main__':
         out_fp = os.path.join(out_dir, out_name)
         with open(out_fp, 'w') as f:
             f.write('\n'.join(split))
+
+    print("Created dataset lists in {}".format(out_dir))

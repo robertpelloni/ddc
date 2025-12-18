@@ -1,0 +1,3 @@
+[submodule "ffr-difficulty-model"]
+	path = ffr-difficulty-model
+	url = https://github.com/robertpelloni/ffr-difficulty-model
