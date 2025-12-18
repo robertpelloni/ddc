@@ -1,6 +1,10 @@
-tensorflow==0.12.1
+tensorflow>=2.0
 numpy
 tqdm
 scipy
 librosa
 mutagen
+Pillow
+requests
+pandas
+scikit-learn
