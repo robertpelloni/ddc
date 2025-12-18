@@ -12,3 +12,6 @@ Modernized pipeline for DDR chart generation.
 ```bash
 python autochart.py song.mp3 --models_dir models/ --ffr_dir ffr-difficulty-model/
 ```
+
+## Submodules
+This repository uses `ffr-difficulty-model` as a submodule.
