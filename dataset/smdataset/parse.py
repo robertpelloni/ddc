@@ -37,7 +37,7 @@ def bpms_parser(x):
     beat_last = -1.0
     bpms_cleaned = []
     for beat, bpm in bpms:
-        if beat == None or bpm == None:
+        if beat is None or bpm is None:
             raise ValueError('Empty BPM found')
         if bpm <= 0.0:
             raise ValueError('Non positive BPM found {}'.format(bpm))
@@ -57,7 +57,7 @@ def stops_parser(x):
 
     beat_last = -1.0
     for beat, stop_len in stops:
-        if beat == None or stop_len == None:
+        if beat is None or stop_len is None:
             raise ValueError('Bad stop formatting')
         if beat < 0.0:
             raise ValueError('Bad beat in stop')
@@ -154,19 +154,26 @@ def parse_sm_txt(sm_txt):
             parlog.warning('Found unexpected attribute {}:{}, ignoring'.format(attr_name, attr_val))
             continue
 
-        attr_val_parsed = ATTR_NAME_TO_PARSER[attr_name](attr_val)
+        try:
+            attr_val_parsed = ATTR_NAME_TO_PARSER[attr_name](attr_val)
+        except ValueError as e:
+            parlog.warning('Error parsing attribute {}: {}'.format(attr_name, e))
+            continue
+
         if attr_name in attrs:
             if attr_name not in ATTR_MULTI:
                 if attr_val_parsed == attrs[attr_name]:
                     continue
                 else:
-                    raise ValueError('Attribute {} defined multiple times'.format(attr_name))
+                    # In some files, headers are duplicated with different capitalization or spacing
+                    # We can probably ignore if different but maybe warn
+                    parlog.warning('Attribute {} defined multiple times with different values'.format(attr_name))
             attrs[attr_name].append(attr_val_parsed)
         else:
             attrs[attr_name] = attr_val_parsed
 
     for attr_name, attr_val in list(attrs.items()):
-        if attr_val == None or attr_val == []:
+        if attr_val is None or attr_val == []:
             del attrs[attr_name]
 
     return attrs

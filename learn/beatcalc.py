@@ -23,7 +23,7 @@ class BeatCalc(object):
             if beat in stops:
                 stops[beat] += stop
             stops[beat] = stop
-        beat_stop = filter(lambda x: x[1] != 0.0, sorted(stops.items(), key=lambda x: x[0]))
+        beat_stop = [x for x in sorted(stops.items(), key=lambda x: x[0]) if x[1] != 0.0]
 
         self.offset = offset
         self.bpms = beat_bpm
@@ -33,7 +33,8 @@ class BeatCalc(object):
 
         # insert line segments for stops
         for beat, stop in beat_stop:
-            seg_idx = np.searchsorted(np.array([x[0] for x in beat_bps]), beat, side='right')
+            beats_list = [x[0] for x in beat_bps]
+            seg_idx = np.searchsorted(np.array(beats_list), beat, side='right')
             _, bps = beat_bps[seg_idx - 1]
 
             beat_bps.insert(seg_idx, (beat + _EPSILON, bps))
@@ -57,7 +58,6 @@ class BeatCalc(object):
         self.segment_spb = 1.0 / self.segment_bps
 
     def beat_to_time(self, beat):
-        assert beat >= 0.0
         seg_idx = np.searchsorted(self.segment_beat, beat, side='right') - 1
         beat_left = self.segment_beat[seg_idx]
         time_left = self.segment_time[seg_idx]
@@ -65,7 +65,6 @@ class BeatCalc(object):
         return time_left + ((beat - beat_left) * spb)
 
     def time_to_beat(self, time):
-        assert time >= 0.0
         seg_idx = np.searchsorted(self.segment_time, time, side='right') - 1
         time_left = self.segment_time[seg_idx]
         beat_left = self.segment_beat[seg_idx]
@@ -74,11 +73,11 @@ class BeatCalc(object):
 
 if __name__ == '__main__':
     bc = BeatCalc(0.05, [(0.0, 120.0), (32.0, 60.0), (64.0, 120.0)], [(16.0, 5.0)])
-    print bc.beat_to_time(0.0)
-    print bc.beat_to_time(1.0)
-    print bc.beat_to_time(8.0)
-    print bc.beat_to_time(16.0)
-    print bc.beat_to_time(32.0)
-    print '-' * 80
-    print bc.time_to_beat(0.0)
-    print bc.time_to_beat(1.0)
+    print(bc.beat_to_time(0.0))
+    print(bc.beat_to_time(1.0))
+    print(bc.beat_to_time(8.0))
+    print(bc.beat_to_time(16.0))
+    print(bc.beat_to_time(32.0))
+    print('-' * 80)
+    print(bc.time_to_beat(0.0))
+    print(bc.time_to_beat(1.0))
