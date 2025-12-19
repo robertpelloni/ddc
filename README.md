@@ -2,6 +2,16 @@
 
 Modernized pipeline for DDR chart generation.
 
+## Installation
+1. Clone repository with submodules:
+   ```bash
+   git clone --recursive <repo_url>
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
 ## Features
 - Onset Detection
 - Symbol Generation (Steps) using LSTM
