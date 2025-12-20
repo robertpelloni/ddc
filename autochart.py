@@ -26,6 +26,9 @@ except ImportError:
     DifficultyPredictor = None
 
 class AutoChart:
+    """
+    Main class for automatic stepchart generation.
+    """
     def __init__(self, models_dir, ffr_model_dir=None, google_key=None, cx=None):
         self.models_dir = models_dir
         self.ffr_predictor = None
