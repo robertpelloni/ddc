@@ -10,3 +10,4 @@ pandas
 scikit-learn
 simfile
 python-dotenv
+# End of requirements
