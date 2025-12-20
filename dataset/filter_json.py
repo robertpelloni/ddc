@@ -152,6 +152,7 @@ if __name__ == '__main__':
                     continue
 
             if args.reduce_ppms:
+                # Dependency: primefac is required only if reduce_ppms is used
                 import primefac
                 from functools import reduce
                 measures = {}
