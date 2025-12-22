@@ -12,6 +12,12 @@ Modernized pipeline for DDR chart generation.
    pip install -r requirements.txt
    ```
 
+## Requirements
+- Python 3.8+
+- TensorFlow 2.x
+- Librosa
+- FFR Difficulty Model (included as submodule)
+
 ## Features
 - Onset Detection
 - Symbol Generation (Steps) using LSTM
