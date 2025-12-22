@@ -41,10 +41,11 @@ class AutoChart:
     def process_song(self, audio_fp, out_dir):
         print(f"Processing {audio_fp}...")
 
-        artist, title = self.get_metadata(audio_fp)
-        print(f"Metadata: {artist} - {title}")
+        artist, title, album = self.get_metadata(audio_fp)
+        print(f"Metadata: {artist} - {title} ({album})")
 
-        song_dir = os.path.join(out_dir, f"{artist} - {title}")
+        # Structure: out_dir/Album/Artist - Title/
+        song_dir = os.path.join(out_dir, album, f"{artist} - {title}")
         if not os.path.exists(song_dir):
             os.makedirs(song_dir)
 
@@ -119,9 +120,10 @@ class AutoChart:
             audio = EasyID3(audio_fp)
             artist = audio.get('artist', ['Unknown Artist'])[0]
             title = audio.get('title', ['Unknown Title'])[0]
-            return artist, title
+            album = audio.get('album', ['Unknown Album'])[0]
+            return artist, title, album
         except:
-            return "Unknown Artist", "Unknown Title"
+            return "Unknown Artist", "Unknown Title", "Unknown Album"
 
     def generate_chart(self, audio_fp, model_path, vocab_path, beats, sr):
         with open(vocab_path, 'r') as f:
