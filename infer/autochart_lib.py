@@ -4,6 +4,7 @@ import numpy as np
 import librosa
 import mutagen
 from mutagen.easyid3 import EasyID3
+from mutagen.id3 import ID3
 import tensorflow as tf
 import json
 import requests
@@ -30,6 +31,14 @@ if DDC_ONSET_DIR not in sys.path:
 from learn.extract_feats_v2 import extract_mel_feats_librosa
 from learn.models_v2 import create_sym_model
 from learn.util import make_onset_feature_context
+
+# Try importing simfile
+try:
+    import simfile
+    from simfile.sm import SMChart
+except ImportError:
+    print("Warning: simfile library not found. Falling back to manual writing if possible, or failing.")
+    simfile = None
 
 # Try importing FFR predictor
 try:
@@ -171,9 +180,8 @@ class AutoChart:
             except Exception as e:
                 print(f"FFR Rating failed: {e}")
 
-        if self.google_key and self.cx:
-            print("Downloading images...")
-            self.download_images(artist, title, song_dir)
+        # Download images (fallback to embedded art)
+        self.get_images(audio_fp, artist, title, song_dir)
 
     def get_metadata(self, audio_fp):
         try:
@@ -254,27 +262,79 @@ class AutoChart:
         return notes_str
 
     def write_sm(self, sm_fp, artist, title, music_file, bpms, charts):
-        with open(sm_fp, 'w') as f:
-            f.write(f"#TITLE:{title};\n")
-            f.write(f"#ARTIST:{artist};\n")
-            f.write(f"#MUSIC:{music_file};\n")
-            f.write(f"#OFFSET:0.0;\n")
-            f.write(f"#BPMS:{bpms[0][0]}={bpms[0][1]};\n")
-            f.write(f"#STOPS:;\n")
+        if simfile:
+            # Use simfile library
+            sm = simfile.open_with_simfile_method('', strict=False) # Create empty SM
+            sm.header['TITLE'] = title
+            sm.header['ARTIST'] = artist
+            sm.header['MUSIC'] = music_file
+            sm.header['OFFSET'] = '0.0'
+            sm.header['BPMS'] = f"{bpms[0][0]}={bpms[0][1]}"
+            sm.header['STOPS'] = ''
+            sm.header['BANNER'] = 'banner.png'
+            sm.header['BACKGROUND'] = 'bg.png'
 
             for c in charts:
-                f.write(f"//------------------\n")
-                f.write(f"#NOTES:\n")
-                f.write(f"     {c['type']}:\n")
-                f.write(f"     :\n")
-                f.write(f"     {c['difficulty']}:\n")
-                f.write(f"     {c['meter']}:\n")
-                f.write(f"     0.0,0.0,0.0,0.0,0.0:\n")
+                chart = SMChart()
+                chart.stepstype = c['type']
+                chart.difficulty = c['difficulty']
+                chart.meter = str(c['meter'])
+                chart.radarvalues = '0.0,0.0,0.0,0.0,0.0'
+                chart.notes = c['notes']
+                sm.charts.append(chart)
 
-                f.write(c['notes'])
-                f.write(f"\n;\n")
+            with open(sm_fp, 'w') as f:
+                sm.serialize(f)
+        else:
+            # Fallback manual writing
+            with open(sm_fp, 'w') as f:
+                f.write(f"#TITLE:{title};\n")
+                f.write(f"#ARTIST:{artist};\n")
+                f.write(f"#MUSIC:{music_file};\n")
+                f.write(f"#OFFSET:0.0;\n")
+                f.write(f"#BPMS:{bpms[0][0]}={bpms[0][1]};\n")
+                f.write(f"#STOPS:;\n")
+                f.write(f"#BANNER:banner.png;\n")
+                f.write(f"#BACKGROUND:bg.png;\n")
 
-    def download_images(self, artist, title, out_dir):
+                for c in charts:
+                    f.write(f"//------------------\n")
+                    f.write(f"#NOTES:\n")
+                    f.write(f"     {c['type']}:\n")
+                    f.write(f"     :\n")
+                    f.write(f"     {c['difficulty']}:\n")
+                    f.write(f"     {c['meter']}:\n")
+                    f.write(f"     0.0,0.0,0.0,0.0,0.0:\n")
+
+                    f.write(c['notes'])
+                    f.write(f"\n;\n")
+
+    def get_images(self, audio_fp, artist, title, out_dir):
+        # 1. Try Google if keys provided
+        if self.google_key and self.cx:
+            print("Downloading images (Google API)...")
+            self.download_images_google(artist, title, out_dir)
+            return
+
+        # 2. Try Embedded Art
+        print("Checking for embedded art...")
+        try:
+            tags = ID3(audio_fp)
+            for key in tags.keys():
+                if key.startswith('APIC:'):
+                    # Found art
+                    data = tags[key].data
+
+                    img = Image.open(BytesIO(data))
+                    img.save(os.path.join(out_dir, "banner.png"))
+                    img.save(os.path.join(out_dir, "bg.png"))
+                    print("Extracted embedded art.")
+                    return
+        except Exception as e:
+            # Not fatal
+            pass
+
+    def download_images_google(self, artist, title, out_dir):
         query = f"{artist} {title} album cover"
         url = f"https://www.googleapis.com/customsearch/v1?q={query}&cx={self.cx}&key={self.google_key}&searchType=image&num=1"
         try:
