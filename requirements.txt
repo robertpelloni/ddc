@@ -8,3 +8,7 @@ Pillow
 requests
 pandas
 scikit-learn
+simfile
+python-dotenv
+torch
+resampy
