@@ -19,7 +19,7 @@ except ImportError:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_path', type=str, help='Input MP3/OGG file or directory of files')
+    parser.add_argument('input_paths', type=str, nargs='+', help='Input MP3/OGG files or directories')
     parser.add_argument('--out_dir', type=str, default='output', help='Output directory')
     parser.add_argument('--models_dir', type=str, required=True, help='Directory containing trained models')
     parser.add_argument('--ffr_dir', type=str, help='Directory containing FFR models')
@@ -30,24 +30,28 @@ def main():
 
     ac = AutoChart(args.models_dir, args.ffr_dir, args.google_key, args.cx)
 
-    if os.path.isdir(args.input_path):
-        # Batch mode
-        print(f"Batch processing directory: {args.input_path}")
-        files = []
-        for root, dirs, filenames in os.walk(args.input_path):
-            for filename in filenames:
-                if filename.lower().endswith(('.mp3', '.ogg', '.wav')):
-                    files.append(os.path.join(root, filename))
+    for input_path in args.input_paths:
+        if os.path.isdir(input_path):
+            # Batch mode
+            print(f"Batch processing directory: {input_path}")
+            files = []
+            for root, dirs, filenames in os.walk(input_path):
+                for filename in filenames:
+                    if filename.lower().endswith(('.mp3', '.ogg', '.wav')):
+                        files.append(os.path.join(root, filename))
 
-        print(f"Found {len(files)} audio files.")
-        for f in files:
+            print(f"Found {len(files)} audio files in {input_path}.")
+            for f in files:
+                try:
+                    ac.process_song(f, args.out_dir)
+                except Exception as e:
+                    print(f"Failed to process {f}: {e}")
+        else:
+            # Single file mode
             try:
-                ac.process_song(f, args.out_dir)
+                ac.process_song(input_path, args.out_dir)
             except Exception as e:
-                print(f"Failed to process {f}: {e}")
-    else:
-        # Single file mode
-        ac.process_song(args.input_path, args.out_dir)
+                print(f"Failed to process {input_path}: {e}")
 
 if __name__ == '__main__':
     main()
