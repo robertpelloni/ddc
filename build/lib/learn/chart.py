@@ -36,7 +36,7 @@ class Chart(object):
 
     def get_coarse_difficulty(self):
         return self.metadata[0]
-    
+
     def get_foot_difficulty(self):
         return self.metadata[1]
 
