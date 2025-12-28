@@ -25,8 +25,17 @@ def main():
     parser.add_argument('--ffr_dir', type=str, help='Directory containing FFR models')
     parser.add_argument('--google_key', type=str, help='Google API Key')
     parser.add_argument('--cx', type=str, help='Google Custom Search Engine ID')
+    parser.add_argument('--version', action='store_true', help='Show version information')
 
     args = parser.parse_args()
+
+    if args.version:
+        try:
+            with open('VERSION.md', 'r') as f:
+                print(f"DDC AutoChart v{f.read().strip()}")
+        except FileNotFoundError:
+            print("DDC AutoChart (Version unknown)")
+        sys.exit(0)
 
     ac = AutoChart(args.models_dir, args.ffr_dir, args.google_key, args.cx)
 
