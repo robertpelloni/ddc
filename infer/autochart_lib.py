@@ -264,15 +264,22 @@ class AutoChart:
     def write_sm(self, sm_fp, artist, title, music_file, bpms, charts):
         if simfile:
             # Use simfile library
-            sm = simfile.open_with_simfile_method('', strict=False) # Create empty SM
-            sm.header['TITLE'] = title
-            sm.header['ARTIST'] = artist
-            sm.header['MUSIC'] = music_file
-            sm.header['OFFSET'] = '0.0'
-            sm.header['BPMS'] = f"{bpms[0][0]}={bpms[0][1]}"
-            sm.header['STOPS'] = ''
-            sm.header['BANNER'] = 'banner.png'
-            sm.header['BACKGROUND'] = 'bg.png'
+            # simfile.open is for reading files. To create one from scratch, we instantiate SMSimfile
+            try:
+                from simfile.sm import SMSimfile
+                sm = SMSimfile()
+            except ImportError:
+                 # Fallback for older simfile versions or if SMSimfile not exposed directly
+                 sm = simfile.sm.SMSimfile()
+
+            sm['TITLE'] = title
+            sm['ARTIST'] = artist
+            sm['MUSIC'] = music_file
+            sm['OFFSET'] = '0.0'
+            sm['BPMS'] = f"{bpms[0][0]}={bpms[0][1]}"
+            sm['STOPS'] = ''
+            sm['BANNER'] = 'banner.png'
+            sm['BACKGROUND'] = 'bg.png'
 
             for c in charts:
                 chart = SMChart()
