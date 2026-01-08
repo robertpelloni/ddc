@@ -1,0 +1,61 @@
+{
+  "title": "Sanity Check",
+  "artist": "DDC",
+  "audio_fp": "lib/ddc/ddc_onset/test/short.mp3",
+  "music_fp": "lib/ddc/ddc_onset/test/short.mp3",
+  "duration": 4.597551020408163,
+  "offset": 0.0,
+  "bpms": [
+    [
+      0.0,
+      120.0
+    ]
+  ],
+  "stops": [],
+  "charts": [
+    {
+      "difficulty_coarse": "Expert",
+      "difficulty_fine": 10,
+      "type": "dance-single",
+      "desc_or_author": "DDC Sanity",
+      "notes": [
+        {
+          "time": 0.11609977324263039,
+          "type": "tap"
+        },
+        {
+          "time": 0.615328798185941,
+          "type": "tap"
+        },
+        {
+          "time": 1.1145578231292517,
+          "type": "tap"
+        },
+        {
+          "time": 1.6137868480725623,
+          "type": "tap"
+        },
+        {
+          "time": 2.1130158730158732,
+          "type": "tap"
+        },
+        {
+          "time": 2.6122448979591835,
+          "type": "tap"
+        },
+        {
+          "time": 3.111473922902494,
+          "type": "tap"
+        },
+        {
+          "time": 3.610702947845805,
+          "type": "tap"
+        },
+        {
+          "time": 4.1099319727891155,
+          "type": "tap"
+        }
+      ]
+    }
+  ]
+}
