@@ -1,13 +1,6 @@
 [submodule "ffr-difficulty-model"]
 	path = ffr-difficulty-model
-<<<<<<< HEAD
-	url = https://github.com/arcero/ffr-difficulty-model.git
-[submodule "ddc_onset"]
-	path = ddc_onset
-	url = ../ddc_onset.git
-=======
 	url = https://github.com/robertpelloni/ffr-difficulty-model
 [submodule "ddc_onset"]
 	path = ddc_onset
 	url = https://github.com/robertpelloni/ddc_onset
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
