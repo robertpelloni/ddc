@@ -46,7 +46,11 @@ def bpms_parser(x):
     bpms_cleaned = []
     for beat, bpm in bpms:
         if beat is None or bpm is None:
+<<<<<<< HEAD
             raise ValueError("Empty BPM found")
+=======
+            raise ValueError('Empty BPM found')
+>>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
         if bpm <= 0.0:
             raise ValueError("Non positive BPM found {}".format(bpm))
         if beat == beat_last:
@@ -70,7 +74,11 @@ def stops_parser(x):
     beat_last = -1.0
     for beat, stop_len in stops:
         if beat is None or stop_len is None:
+<<<<<<< HEAD
             raise ValueError("Bad stop formatting")
+=======
+            raise ValueError('Bad stop formatting')
+>>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
         if beat < 0.0:
             raise ValueError("Bad beat in stop")
         if stop_len == 0.0:
@@ -194,6 +202,7 @@ def parse_sm_txt(sm_txt):
             parlog.warning("Error parsing attribute {}: {}".format(attr_name, e))
             continue
 
+<<<<<<< HEAD
         if attr_name in attrs:
             if attr_name in ATTR_MULTI:
                 attrs[attr_name].append(attr_val_parsed)
@@ -207,6 +216,23 @@ def parse_sm_txt(sm_txt):
                         )
                     )
                     attrs[attr_name] = attr_val_parsed
+=======
+        try:
+            attr_val_parsed = ATTR_NAME_TO_PARSER[attr_name](attr_val)
+        except ValueError as e:
+            parlog.warning('Error parsing attribute {}: {}'.format(attr_name, e))
+            continue
+
+        if attr_name in attrs:
+            if attr_name not in ATTR_MULTI:
+                if attr_val_parsed == attrs[attr_name]:
+                    continue
+                else:
+                    # In some files, headers are duplicated with different capitalization or spacing
+                    # We can probably ignore if different but maybe warn
+                    parlog.warning('Attribute {} defined multiple times with different values'.format(attr_name))
+            attrs[attr_name].append(attr_val_parsed)
+>>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
         else:
             attrs[attr_name] = attr_val_parsed
 

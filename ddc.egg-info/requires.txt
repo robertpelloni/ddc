@@ -1,0 +1,14 @@
+tensorflow>=2.0
+numpy
+tqdm
+scipy
+librosa
+mutagen
+Pillow
+requests
+pandas
+scikit-learn
+simfile
+python-dotenv
+torch
+resampy
