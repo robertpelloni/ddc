@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.3  
+**Version:** 0.2.4  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -69,6 +69,12 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 #### 5. Corpus Audit
 **Location:** `docs/CORPUS_AUDIT_2026-04-04.md`  
 **Description:** Raw corpus inventory including `.sm` vs `.ssc` file counts, note-symbol distribution, and per-bucket special-symbol coverage.
+
+## Extraction Status
+
+- `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
+- A refreshed local extraction confirmed growth from **1234** to **1254** extracted songs and from **9241** to **9403** charts when `.ssc`-only songs are included.
+- Full retraining against the refreshed `.ssc`-inclusive extraction is still recommended as the next model-refresh step.
 
 ## Important Operational Notes
 

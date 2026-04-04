@@ -109,7 +109,7 @@ def render_markdown(raw_dir: str, json_dir: str, ssc_files, sm_files, audit: dic
         f"- `.sm` files found: **{len(sm_files)}**",
         f"- `.ssc` files found: **{len(ssc_files)}**",
         "",
-        "### `.ssc` files present but not currently used by extraction",
+        "### `.ssc` files present in the raw corpus",
         "",
     ]
 
@@ -159,14 +159,14 @@ def render_markdown(raw_dir: str, json_dir: str, ssc_files, sm_files, audit: dic
         "",
         "## Interpretation",
         "",
-        "- The current extractor/train path uses `.sm` data and ignores `.ssc` files.",
+        "- The extractor now supports `.ssc` in addition to `.sm`; this audit reflects a refreshed JSON extraction that includes those files.",
         "- The extracted corpus clearly contains non-binary symbols beyond `0` and `1`, notably `2`, `3`, and `M`.",
         "- This means the DDC symbolic corpus is not tap-only.",
         "- However, the difficulty evaluator currently reduces charts to tap notes only, so non-tap object semantics are not fully modeled there.",
         "",
         "## Recommended next actions",
         "",
-        "1. Add `.ssc` ingestion to extraction so the remaining 20 official-pack files are included.",
+        "1. Re-run downstream filtering/training so the newly recovered `.ssc` songs are included in model training.",
         "2. Add a note-object semantic audit mapping for `2`, `3`, `M`, and any additional symbols encountered in future packs.",
         "3. Extend the difficulty evaluator so it captures object types beyond taps.",
     ]

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-04-04
+
+### Added
+- Added `.ssc` extraction support to `dataset/extract_json.py` using `simfile` for `.ssc`-only songs.
+- Added validation/audit updates confirming the refreshed extracted corpus grows from 1234 to 1254 songs and from 9241 to 9403 charts after including `.ssc` content.
+
+### Changed
+- Updated corpus-audit reporting to reflect the new `.ssc`-inclusive extraction state.
+- Updated training analysis to distinguish between extractor support being present and full retraining against the refreshed corpus still being pending.
+
 ## [0.2.3] - 2026-04-04
 
 ### Added
