@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.23] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_8_2026-04-04.md` capturing the first practical bucket appearing complete and the second practical bucket becoming active during the `.ssc`-inclusive refresh run.
+
+### Changed
+- Documented the next major in-flight milestone for the active refresh: `dance-single_Easy` reached a full observed 10-checkpoint set, `dance-single_Medium` appeared and advanced to at least `model_06.pth`, and later-epoch (`7/10`) log output was observed for the active bucket.
+
 ## [0.2.22] - 2026-04-04
 
 ### Added
