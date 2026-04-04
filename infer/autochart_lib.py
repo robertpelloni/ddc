@@ -5,7 +5,8 @@ import librosa
 import mutagen
 from mutagen.easyid3 import EasyID3
 from mutagen.id3 import ID3
-import tensorflow as tf
+import torch
+import torch.nn.functional as F
 import json
 import requests
 from PIL import Image
@@ -19,51 +20,58 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 # Add ffr-difficulty-model to path
-FFR_DIR = os.path.join(REPO_ROOT, 'ffr-difficulty-model')
+FFR_DIR = os.path.join(REPO_ROOT, "ffr-difficulty-model")
 if FFR_DIR not in sys.path:
     sys.path.append(FFR_DIR)
 
 # Add ddc_onset to path
-DDC_ONSET_DIR = os.path.join(REPO_ROOT, 'ddc_onset')
+DDC_ONSET_DIR = os.path.join(REPO_ROOT, "ddc_onset")
 if DDC_ONSET_DIR not in sys.path:
     sys.path.append(DDC_ONSET_DIR)
 
 from learn.extract_feats_v2 import extract_mel_feats_librosa
-from learn.models_v2 import create_sym_model
+from learn.models_pt import SymNet, OnsetNet
 from learn.util import make_onset_feature_context
 
 # Try importing simfile
 try:
     import simfile
-    from simfile.sm import SMChart
+    from simfile.sm import SMChart, SMSimfile
 except ImportError:
-    print("Warning: simfile library not found. Falling back to manual writing if possible, or failing.")
+    print(
+        "Warning: simfile library not found. Falling back to manual writing if possible, or failing."
+    )
     simfile = None
 
 # Try importing FFR predictor
 try:
-    from stepmania_difficulty_predictor.models.prediction_pipeline import ModeAgnosticDifficultyPredictor as DifficultyPredictor
+    from stepmania_difficulty_predictor.models.prediction_pipeline import \
+        ModeAgnosticDifficultyPredictor as DifficultyPredictor
 except ImportError:
     DifficultyPredictor = None
 
 # Try importing ddc_onset
 try:
-    import torch
     from ddc_onset.ddc_onset import util as ddc_util
+
     DDC_ONSET_AVAILABLE = True
 except ImportError:
     DDC_ONSET_AVAILABLE = False
     print("Warning: ddc_onset not available. Install torch and resampy to use it.")
 
+from learn.train_v2 import DEFAULT_CONFIG
+
+
 class AutoChart:
     """
     Main class for automatic stepchart generation.
     """
+
     def __init__(self, models_dir, ffr_model_dir=None, google_key=None, cx=None):
         self.models_dir = models_dir
         self.ffr_predictor = None
         if DifficultyPredictor and ffr_model_dir:
-             self.ffr_predictor = DifficultyPredictor(ffr_model_dir)
+            self.ffr_predictor = DifficultyPredictor(ffr_model_dir)
 
         self.google_key = google_key
         self.cx = cx
@@ -103,9 +111,7 @@ class AutoChart:
                 # Check device
                 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-                onset_salience = ddc_util.compute_onset_salience(
-                    y, sr, device=device
-                )
+                onset_salience = ddc_util.compute_onset_salience(y, sr, device=device)
 
                 peaks = ddc_util.find_peaks(onset_salience)
                 # Threshold - using 0.1 as a safe default, or maybe higher?
@@ -115,7 +121,9 @@ class AutoChart:
                 # DDC usually generates steps on onsets.
                 # Let's use a low threshold to capture most musical events.
 
-                thresholded_peaks = ddc_util.threshold_peaks(onset_salience, peaks, threshold=0.1)
+                thresholded_peaks = ddc_util.threshold_peaks(
+                    onset_salience, peaks, threshold=0.1
+                )
 
                 # Convert frames (100Hz) to seconds
                 beats = [p / 100.0 for p in thresholded_peaks]
@@ -125,7 +133,7 @@ class AutoChart:
 
         if beats is None:
             # Check for legacy Onset model
-            onset_model_path = os.path.join(self.models_dir, 'onset', 'model.h5')
+            onset_model_path = os.path.join(self.models_dir, "onset", "model.h5")
             if os.path.exists(onset_model_path):
                 print("Running Onset Detection (Legacy Keras Model)...")
                 # TODO: Implement inference for legacy model if needed,
@@ -140,27 +148,38 @@ class AutoChart:
 
         charts = []
 
-        difficulties = ['Beginner', 'Easy', 'Medium', 'Expert', 'Challenge']
-        types = ['dance-single', 'dance-double']
+        difficulties = ["Beginner", "Easy", "Medium", "Hard", "Challenge"]
+        types = ["dance-single", "dance-double"]
 
         for chart_type in types:
             for difficulty in difficulties:
                 model_name = f"{chart_type}_{difficulty}"
-                model_path = os.path.join(self.models_dir, model_name, 'model.h5')
-                vocab_path = os.path.join(self.models_dir, model_name, 'vocab.json')
+                model_path = os.path.join(self.models_dir, model_name, "model_10.pth")
+                vocab_path = os.path.join(self.models_dir, model_name, "vocab.json")
 
                 if not os.path.exists(model_path):
-                    continue
+                    # Try other epochs if 10 doesn't exist
+                    found = False
+                    for epoch in range(9, 0, -1):
+                        alt_path = os.path.join(self.models_dir, model_name, f"model_{epoch:02d}.pth")
+                        if os.path.exists(alt_path):
+                            model_path = alt_path
+                            found = True
+                            break
+                    if not found:
+                        continue
 
                 print(f"Generating {difficulty} {chart_type}...")
                 notes = self.generate_chart(audio_fp, model_path, vocab_path, beats, sr)
 
-                charts.append({
-                    'type': chart_type,
-                    'difficulty': difficulty,
-                    'meter': 1,
-                    'notes': notes
-                })
+                charts.append(
+                    {
+                        "type": chart_type,
+                        "difficulty": difficulty,
+                        "meter": 1,
+                        "notes": notes,
+                    }
+                )
 
         sm_fp = os.path.join(song_dir, f"{artist} - {title}.sm")
         self.write_sm(sm_fp, artist, title, os.path.basename(audio_fp), bpms, charts)
@@ -171,11 +190,15 @@ class AutoChart:
                 preds = self.ffr_predictor.predict(sm_fp)
                 for p in preds:
                     for c in charts:
-                        if c['type'] == p.get('mode', 'dance-single') and c['difficulty'] == p.get('difficulty'):
-                            c['meter'] = int(round(p['predicted_difficulty']))
+                        if c["type"] == p.get("mode", "dance-single") and c[
+                            "difficulty"
+                        ] == p.get("difficulty"):
+                            c["meter"] = float(p["predicted_difficulty"])
                             break
 
-                self.write_sm(sm_fp, artist, title, os.path.basename(audio_fp), bpms, charts)
+                self.write_sm(
+                    sm_fp, artist, title, os.path.basename(audio_fp), bpms, charts
+                )
 
             except Exception as e:
                 print(f"FFR Rating failed: {e}")
@@ -186,127 +209,116 @@ class AutoChart:
     def get_metadata(self, audio_fp):
         try:
             audio = EasyID3(audio_fp)
-            artist = audio.get('artist', ['Unknown Artist'])[0]
-            title = audio.get('title', ['Unknown Title'])[0]
-            album = audio.get('album', ['Unknown Album'])[0]
+            artist = audio.get("artist", ["Unknown Artist"])[0]
+            title = audio.get("title", ["Unknown Title"])[0]
+            album = audio.get("album", ["Unknown Album"])[0]
             return artist, title, album
         except:
             return "Unknown Artist", "Unknown Title", "Unknown Album"
 
     def generate_chart(self, audio_fp, model_path, vocab_path, beats, sr):
-        with open(vocab_path, 'r') as f:
+        with open(vocab_path, "r") as f:
             vocab = json.load(f)
         id_to_token = {v: k for k, v in vocab.items()}
+        vocab_size = len(vocab) + 1
 
-        try:
-            from learn.models_v2 import SymNetV2
-            model = tf.keras.models.load_model(model_path, custom_objects={'SymNetV2': SymNetV2})
-        except:
-            model = tf.keras.models.load_model(model_path)
+        # Configuration for PyTorch model
+        config = DEFAULT_CONFIG.copy()
+        config["audio_context_radius"] = 1
+        
+        # Audio shape: (channels, context, freq)
+        audio_shape = (3, config["audio_context_radius"] * 2 + 1, 80)
+        n_other = 0
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model = SymNet(audio_shape, n_other, vocab_size, config).to(device)
+        model.load_state_dict(torch.load(model_path, map_location=device))
+        model.eval()
 
         song_feats = extract_mel_feats_librosa(audio_fp)
         frame_rate = 44100 / 512.0
 
         generated_tokens = []
-        current_seq = [vocab.get('<-1>', 0)] * 64
+        # Pad with 64 silence tokens
+        current_seq = [vocab.get("<-1>", 0)] * 64
 
         notes_str = ""
 
-        for i, beat_time in enumerate(beats):
-            # For each beat (onset), predict the step
+        with torch.no_grad():
+            state = None
+            for i, beat_time in enumerate(beats):
+                # For each beat (onset), predict the step
+                input_syms = torch.tensor([current_seq[-64:]]).long().to(device)
 
-            input_syms = np.array(current_seq[-64:])
-
-            input_audio = []
-            for j in range(64):
-                b_idx = i - 63 + j
-                if b_idx < 0:
-                    f_idx = 0
-                else:
-                    if b_idx < len(beats):
-                        f_idx = int(beats[b_idx] * frame_rate)
+                input_audio_list = []
+                for j in range(64):
+                    b_idx = i - 63 + j
+                    if b_idx < 0:
+                        f_idx = 0
                     else:
-                        f_idx = song_feats.shape[0] - 1
+                        if b_idx < len(beats):
+                            f_idx = int(beats[b_idx] * frame_rate)
+                        else:
+                            f_idx = song_feats.shape[0] - 1
 
-                feat = make_onset_feature_context(song_feats, f_idx, 1)
-                input_audio.append(feat)
+                    feat = make_onset_feature_context(song_feats, f_idx, 1)
+                    # Permute to (C, H, W) for PyTorch: (3, 3, 80)
+                    feat = torch.from_numpy(feat).permute(2, 0, 1).float()
+                    input_audio_list.append(feat)
 
-            input_audio = np.array(input_audio)
-            input_other = np.zeros((64, 0))
+                input_audio = torch.stack(input_audio_list).unsqueeze(0).to(device) # (1, 64, 3, 3, 80)
+                input_other = torch.zeros((1, 64, 0)).to(device)
 
-            preds = model.predict([
-                input_syms[np.newaxis, :],
-                input_audio[np.newaxis, :],
-                input_other[np.newaxis, :]
-            ], verbose=0)
+                # Forward pass
+                # SymNet returns (logits, state)
+                logits, state = model(input_syms, input_audio, input_other, state if i > 0 else None)
+                
+                # Take last prediction in sequence
+                last_logits = logits[0, -1, :]
+                token_id = torch.argmax(last_logits).item()
+                token = id_to_token.get(token_id, "0000")
 
-            last_pred = preds[0, -1, :]
-            token_id = np.argmax(last_pred)
-            token = id_to_token.get(token_id, "0000")
+                generated_tokens.append(token)
+                current_seq.append(token_id)
 
-            generated_tokens.append(token)
-            current_seq.append(token_id)
-
-            # Format: note\n
-            notes_str += token + "\n"
-            # Add comma every 4 notes?
-            # Note: This alignment logic is simplistic.
-            # In real SM, comma separates measures.
-            # If we assume 4/4 time and 'beats' are quarter notes, then every 4 beats is a comma.
-            if (i + 1) % 4 == 0:
-                notes_str += ",\n"
+                # Format: note\n
+                notes_str += token + "\n"
+                # Add comma every 4 notes
+                if (i + 1) % 4 == 0:
+                    notes_str += ",\n"
 
         if not notes_str.endswith(";\n"):
-             notes_str += ";"
+            notes_str += ";"
 
         return notes_str
 
     def write_sm(self, sm_fp, artist, title, music_file, bpms, charts):
         if simfile:
             # Use simfile library
-<<<<<<< HEAD
-            sm = simfile.open_with_simfile_method('', strict=False) # Create empty SM
-            sm.header['TITLE'] = title
-            sm.header['ARTIST'] = artist
-            sm.header['MUSIC'] = music_file
-            sm.header['OFFSET'] = '0.0'
-            sm.header['BPMS'] = f"{bpms[0][0]}={bpms[0][1]}"
-            sm.header['STOPS'] = ''
-            sm.header['BANNER'] = 'banner.png'
-            sm.header['BACKGROUND'] = 'bg.png'
-=======
-            # simfile.open is for reading files. To create one from scratch, we instantiate SMSimfile
-            try:
-                from simfile.sm import SMSimfile
-                sm = SMSimfile()
-            except ImportError:
-                 # Fallback for older simfile versions or if SMSimfile not exposed directly
-                 sm = simfile.sm.SMSimfile()
-
-            sm['TITLE'] = title
-            sm['ARTIST'] = artist
-            sm['MUSIC'] = music_file
-            sm['OFFSET'] = '0.0'
-            sm['BPMS'] = f"{bpms[0][0]}={bpms[0][1]}"
-            sm['STOPS'] = ''
-            sm['BANNER'] = 'banner.png'
-            sm['BACKGROUND'] = 'bg.png'
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
+            sm = SMSimfile()
+            sm["TITLE"] = title
+            sm["ARTIST"] = artist
+            sm["MUSIC"] = music_file
+            sm["OFFSET"] = "0.0"
+            sm["BPMS"] = f"{bpms[0][0]}={bpms[0][1]}"
+            sm["STOPS"] = ""
+            sm["BANNER"] = "banner.png"
+            sm["BACKGROUND"] = "bg.png"
 
             for c in charts:
                 chart = SMChart()
-                chart.stepstype = c['type']
-                chart.difficulty = c['difficulty']
-                chart.meter = str(c['meter'])
-                chart.radarvalues = '0.0,0.0,0.0,0.0,0.0'
-                chart.notes = c['notes']
+                chart.stepstype = c["type"]
+                chart.difficulty = c["difficulty"]
+                chart.meter = str(c["meter"])
+                chart.radarvalues = "0.0,0.0,0.0,0.0,0.0"
+                chart.notes = c["notes"]
                 sm.charts.append(chart)
 
-            with open(sm_fp, 'w') as f:
+            with open(sm_fp, "w") as f:
                 sm.serialize(f)
         else:
             # Fallback manual writing
-            with open(sm_fp, 'w') as f:
+            with open(sm_fp, "w") as f:
                 f.write(f"#TITLE:{title};\n")
                 f.write(f"#ARTIST:{artist};\n")
                 f.write(f"#MUSIC:{music_file};\n")
@@ -325,8 +337,8 @@ class AutoChart:
                     f.write(f"     {c['meter']}:\n")
                     f.write(f"     0.0,0.0,0.0,0.0,0.0:\n")
 
-                    f.write(c['notes'])
-                    f.write(f"\n;\n")
+                    f.write(c["notes"])
+                    f.write(f"\n;")
 
     def get_images(self, audio_fp, artist, title, out_dir):
         # 1. Try Google if keys provided
@@ -340,7 +352,7 @@ class AutoChart:
         try:
             tags = ID3(audio_fp)
             for key in tags.keys():
-                if key.startswith('APIC:'):
+                if key.startswith("APIC:"):
                     # Found art
                     data = tags[key].data
 
@@ -358,8 +370,8 @@ class AutoChart:
         url = f"https://www.googleapis.com/customsearch/v1?q={query}&cx={self.cx}&key={self.google_key}&searchType=image&num=1"
         try:
             res = requests.get(url).json()
-            if 'items' in res:
-                img_url = res['items'][0]['link']
+            if "items" in res:
+                img_url = res["items"][0]["link"]
                 img_data = requests.get(img_url).content
 
                 img = Image.open(BytesIO(img_data))

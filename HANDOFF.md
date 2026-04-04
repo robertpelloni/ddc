@@ -1,58 +1,46 @@
-<<<<<<< HEAD
-# Handoff Document
+# DDC Training / Integration Handoff
 
-## Project Status
-*   **Date**: 2025-12-25
-*   **Version**: 2.0.0
-*   **State**: Modernized pipeline (TF2/Python3) is fully implemented. Submodules are updated.
+Date: 2026-04-04
 
-## Recent Changes
-*   Added `autochart.py` for streamlined inference.
-*   Added `download_data.ps1` for Windows support.
-*   Integrated `ffr-difficulty-model`.
-*   Created `docs/DASHBOARD.md` and `VERSION.md`.
+## Status
 
-## Active Tasks
-*   **Training**: The user needs to run the training pipeline (`scripts/train_all.py`) to generate the models required for `autochart.py`.
-*   **Testing**: Verify the full pipeline end-to-end once models are trained.
+Core training/integration work has been advanced substantially.
 
-## Submodules
-See `docs/DASHBOARD.md` for details.
-=======
-# Handoff Documentation
+### Completed in this pass
 
-**Date:** 2023-10-27
-**Agent:** Jules
-**Version:** 0.2.1
+- Confirmed official DDR pack download sources already configured in the repo and verified completed download markers.
+- Prepared filtered JSON buckets for single/double DDR chart training.
+- Switched the top-level training orchestration to use the PyTorch trainer in the current environment.
+- Trained the practical 8-bucket placement layout:
+  - single Easy / Medium / Hard / Challenge
+  - double Easy / Medium / Hard / Challenge
+- Trained an onset model from `dance-single_Hard`.
+- Rebuilt the difficulty-evaluator dataset and trained both:
+  - `dance-single`
+  - `dance-double`
+- Fixed the submodule difficulty-training script so global NaN cleanup does not silently eliminate one mode.
+- Added detailed documentation of findings in `docs/TRAINING_ANALYSIS_2026-04-04.md`.
+- Updated versioning/documentation files to `0.2.2`.
 
-## Session Summary
-This session focused on modernizing the Dance Dance Convolution (DDC) codebase from a legacy Python 2/TensorFlow 0.12 state to a modern Python 3/TensorFlow 2.x architecture. Key external components (`ddc_onset` and `ffr-difficulty-model`) were integrated as git submodules to provide beat detection and difficulty rating capabilities.
+## Key Findings
 
-## Key Accomplishments
-1.  **Modernization**: Codebase is now compatible with Python 3.8+ and TF 2.x. `librosa` replaces `essentia`.
-2.  **Architecture**:
-    *   **Inference**: `autochart.py` and `infer/autochart_lib.py` drive the end-to-end generation process.
-    *   **Training**: `scripts/train_all.py` allows retraining from scratch.
-3.  **Integration**:
-    *   **DDC Onset**: Used for precise timing/beat detection.
-    *   **FFR Difficulty**: Used to rate generated charts on a 0-20 scale.
-4.  **Packaging**: `setup.py` added for pip installation.
+- Beginner placement was not part of the final 8-run practical export plan.
+- `dance-double_Beginner` has effectively no usable dataset size in the observed official-pack corpus.
+- The DDC symbolic training path does not automatically collapse chart content to tap-only tokens.
+- The difficulty evaluator *does* currently reduce charts to tap notes only, so shock arrows/mines/holds/rolls/lifts/fakes are not fully represented there.
+- `.ssc`-only information is still outside the current extraction path.
 
-## Repository State
-*   **Branch**: `master` (features merged).
-*   **Submodules**:
-    *   `ddc_onset`: Checked out and updated.
-    *   `ffr-difficulty-model`: Checked out and updated.
-*   **Configuration**:
-    *   `VERSION` file controls the package version.
-    *   `LLM_INSTRUCTIONS.md` guides future agents.
+## Important Repository Notes
 
-## Known Issues / Future Work
-*   **Double Charts**: The current `SymNet` model is trained primarily for Single (4-panel) play. Generating Double (8-panel) charts requires training a new model on appropriate data. The codebase supports the logic, but the model weights are needed.
-*   **Integration Tests**: Sandbox environment limitations prevented full integration testing with audio hardware/drivers, so reliance is on unit logic and manual verification.
+- Large generated artifacts should not be pushed casually.
+- `output_v132/` is heavyweight local training output and should remain local.
+- local model exports are also large and should use a deliberate artifact/publication strategy.
 
-## Instructions for Next Agent
-1.  **Check Submodules**: Always run `git submodule update --init --recursive` upon starting.
-2.  **Version Bump**: If you make changes, increment `VERSION` and update `CHANGELOG.md`.
-3.  **Deployment**: Use `pip install .` to test installation.
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
+## Recommended Next Steps
+
+1. Audit actual note-symbol coverage in the official DDR corpus.
+2. Add `.ssc` ingestion.
+3. Add `dance-single_Beginner` placement training as an optional extension.
+4. Extend the difficulty evaluator to include non-tap object semantics.
+5. Create a clean ArrowVortex deploy/export path for final checkpoints.
+6. Push code/documentation/submodule changes cleanly without pushing massive generated artifacts.

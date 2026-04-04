@@ -2,3 +2,6 @@
 data/
 *.log
 .venv/
+all_jsons.txt
+output_v132/
+models_v3/

@@ -76,12 +76,7 @@ def main():
         # Determine input shape
         # (3, context*2+1, 80)
         audio_shape = (3, config["audio_context_radius"] * 2 + 1, 80)
-        n_other = 0  # Updated inside DataGenerator logic if needed, but currently hardcoded 0 in train_v2 logic if no extra feats
-        # Actually dataset_pt uses the same logic. Let's check n_other.
-        # DataGenerator returns b_other. OnsetChart.get_example returns empty other if no diff flags.
-        # BUT train_v2 sets n_other = 0.
-        # Wait, OnsetChart.get_example populates feats_other based on kwargs like diff_feet_to_id.
-        # DataGenerator default config doesn't set these. So n_other is 0.
+        n_other = 0
 
         model = OnsetNet(audio_shape, n_other, config).to(device)
         criterion = nn.BCELoss()
@@ -142,7 +137,7 @@ def main():
             # Move to device
             if args.model_type == "onset":
                 inputs = [x.to(device) for x in inputs]
-                targets = targets.to(device)
+                targets = targets.to(device).unsqueeze(1)
             else:
                 inputs = [x.to(device) for x in inputs]
                 targets = targets.to(device).view(
@@ -153,7 +148,11 @@ def main():
                 # Reshape logits to (B*Seq, Vocab)
 
             optimizer.zero_grad()
-            outputs, _ = model(*inputs)
+            outputs = model(*inputs)
+            
+            # Unpack if model returns (outputs, state) like SymNet
+            if isinstance(outputs, tuple):
+                outputs, _ = outputs
 
             if args.model_type == "sym":
                 outputs = outputs.view(-1, outputs.size(-1))
@@ -187,7 +186,7 @@ def main():
                 for inputs, targets in valid_loader:
                     if args.model_type == "onset":
                         inputs = [x.to(device) for x in inputs]
-                        targets = targets.to(device)
+                        targets = targets.to(device).unsqueeze(1)
                     else:
                         inputs = [x.to(device) for x in inputs]
                         targets = targets.to(device).view(-1)

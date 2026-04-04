@@ -1,28 +1,31 @@
 # Changelog
 
-<<<<<<< HEAD
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2025-12-25
+## [0.2.2] - 2026-04-04
 
 ### Added
-- **Modernized Pipeline**: Introduced `autochart.py` for streamlined chart generation using TensorFlow 2 and Librosa.
-- **PowerShell Support**: Added `download_data.ps1` for Windows users to download DDR packs.
-- **FFR Integration**: Integrated `ffr-difficulty-model` for automatic difficulty rating of generated charts.
-- **Documentation**: Added `docs/DASHBOARD.md` and updated LLM instruction files.
-- **Versioning**: Added `VERSION.md` for centralized version management.
+- Added a comprehensive training/data-coverage report in `docs/TRAINING_ANALYSIS_2026-04-04.md`.
+- Added local export/documentation flow for the newly trained DDC v2 model set.
 
 ### Changed
-- **Architecture**: Migrated from legacy Python 2/TF1 code to Python 3/TF2.
-- **Training**: Updated training scripts (`train_v2.py`) to support the new architecture.
-- **Structure**: Reorganized project structure for better modularity.
+- Switched the DDC training orchestrator to use the PyTorch trainer for onset and SymNet training.
+- Trained the practical 8-bucket placement configuration for ArrowVortex-oriented DDR use:
+  - single Easy / Medium / Hard / Challenge
+  - double Easy / Medium / Hard / Challenge
+- Updated inference scaffolding in `infer/autochart_lib.py` toward PyTorch checkpoint loading.
+- Corrected the FFR difficulty-model training path so `dance-single` and `dance-double` both survive data cleaning and train successfully.
+- Preserved floating-point difficulty regression behavior for the difficulty evaluator.
+- Added ignore rules for large local training artifacts and generated exports.
 
-### Removed
-- Legacy client/server scripts (`ddc_client.py`, `ddc_server.sh`) were removed in previous updates.
-=======
+### Fixed
+- Fixed target-shape/model-output issues in the PyTorch DDC training path.
+- Fixed mode-specific NaN handling in `ffr-difficulty-model/scripts/train_model.py`.
+- Resolved repository documentation inconsistency around current training status and artifact handling.
+
 ## [0.2.1] - 2023-10-27
 
 ### Added
@@ -47,4 +50,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - **Legacy Code**: Removed `infer/onset_net.py` and `infer/sym_net.py` (logic moved to `ddc_onset` submodule and `learn/models_v2.py`).
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
