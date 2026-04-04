@@ -31,6 +31,10 @@ That means the current trained model artifacts are now behind the best available
 
 ## Recommended refresh workflow
 
+A current readiness snapshot for the prepared refresh workspace is documented in:
+
+- `docs/SSC_REFRESH_READINESS_2026-04-04.md`
+
 ## 1. Prepare a fresh work directory
 
 Suggested work directory example:
@@ -43,6 +47,12 @@ python scripts/prepare_data.py data/raw/ddr_official data/ssc_refresh_work
 
 ```bash
 python learn/extract_feats_v2.py data/ssc_refresh_work/all_jsons.txt data/ssc_refresh_work/feats --jobs 4
+```
+
+If preparation and feature extraction are already complete, the preferred resume-friendly orchestration command is:
+
+```bash
+python scripts/train_all.py data/raw/ddr_official data/ssc_refresh_work --jobs 4 --skip_prepare --skip_feature_extraction --skip_existing_models
 ```
 
 ## 3. Retrain DDC onset + placement models

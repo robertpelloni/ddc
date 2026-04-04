@@ -26,10 +26,11 @@ The project is organized as follows:
 - **`docs/BUCKET_SPLIT_DELTA_2026-04-04.md`**: Exact train/valid/test split deltas for every bucket after refreshed `.ssc`-inclusive preparation.
 - **`docs/REPO_HEALTH_AUDIT_2026-04-04.md`**: Remaining repository blocker/hotspot audit for merge conflicts and legacy TensorFlow references.
 - **`docs/LEGACY_SUBTREE_QUARANTINE_2026-04-04.md`**: Quarantine decision note for the final legacy-subtree conflict-marker files.
+- **`docs/SSC_REFRESH_READINESS_2026-04-04.md`**: Readiness/status audit for the prepared `.ssc`-inclusive refresh work directory.
 
 ## Build Information
 
-- **Version**: 0.2.13
+- **Version**: 0.2.14
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 

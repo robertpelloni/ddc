@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.13  
+**Version:** 0.2.14  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -93,6 +93,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 #### 11. Legacy Subtree Quarantine Note
 **Location:** `docs/LEGACY_SUBTREE_QUARANTINE_2026-04-04.md`  
 **Description:** Rationale for treating the remaining `ddc_stepmania/` conflict-marker files as quarantined legacy-subtree content.
+
+#### 12. SSC Refresh Readiness Audit
+**Location:** `docs/SSC_REFRESH_READINESS_2026-04-04.md`  
+**Description:** Exact state of the prepared `.ssc`-inclusive refresh work directory and the recommended resume-friendly training command.
 
 ## Extraction Status
 

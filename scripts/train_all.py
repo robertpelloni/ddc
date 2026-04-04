@@ -2,16 +2,30 @@ import os
 import subprocess
 import argparse
 import sys
+import glob
+
 
 def run_cmd(cmd):
     print(f"Running: {cmd}")
     subprocess.check_call(cmd, shell=True)
+
+
+def has_pytorch_checkpoints(out_dir):
+    return bool(glob.glob(os.path.join(out_dir, "model_*.pth")))
+
+
+def has_ffr_models(model_dir):
+    return bool(glob.glob(os.path.join(model_dir, "*.p")))
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('packs_dir', type=str, help='Input packs directory')
     parser.add_argument('work_dir', type=str, help='Working directory for processed data and models')
     parser.add_argument('--jobs', type=int, default=4)
+    parser.add_argument('--skip_prepare', action='store_true', help='Skip data preparation if work_dir is already prepared')
+    parser.add_argument('--skip_feature_extraction', action='store_true', help='Skip feature extraction if features already exist')
+    parser.add_argument('--skip_existing_models', action='store_true', help='Skip onset/sym/ffr training when output artifacts already exist')
     args = parser.parse_args()
 
     json_dir = os.path.join(args.work_dir, 'json')
@@ -21,7 +35,10 @@ def main():
     ffr_models_dir = os.path.join(args.work_dir, 'ffr_models')
 
     print("=== Step 1: Prepare Data ===")
-    run_cmd(f"{sys.executable} scripts/prepare_data.py {args.packs_dir} {args.work_dir}")
+    if args.skip_prepare:
+        print("Skipping data preparation (--skip_prepare).")
+    else:
+        run_cmd(f"{sys.executable} scripts/prepare_data.py {args.packs_dir} {args.work_dir}")
 
     print("=== Step 2: Extract Features ===")
     all_jsons_list = os.path.join(args.work_dir, 'all_jsons.txt')
@@ -36,7 +53,10 @@ def main():
                         f.write(os.path.join(root, file) + '\n')
     
     if os.path.getsize(all_jsons_list) > 0:
-        run_cmd(f"{sys.executable} learn/extract_feats_v2.py {all_jsons_list} {feats_dir} --jobs {args.jobs}")
+        if args.skip_feature_extraction:
+            print("Skipping feature extraction (--skip_feature_extraction).")
+        else:
+            run_cmd(f"{sys.executable} learn/extract_feats_v2.py {all_jsons_list} {feats_dir} --jobs {args.jobs}")
     else:
         print("No JSON files found to extract features from.")
 
@@ -45,8 +65,11 @@ def main():
     # Training onset on 'Hard' which is the standard Expert difficulty in StepMania
     onset_data_dir = os.path.join(args.work_dir, 'json_filtered', 'dance-single_Hard')
     if os.path.exists(onset_data_dir):
-        # Using PyTorch training script instead of TF
-        run_cmd(f"{sys.executable} scripts/train_pt.py --dataset_dir {onset_data_dir} --feats_dir {feats_dir} --out_dir {os.path.join(models_dir, 'onset')} --model_type onset --epochs 5")
+        onset_out_dir = os.path.join(models_dir, 'onset')
+        if args.skip_existing_models and has_pytorch_checkpoints(onset_out_dir):
+            print(f"Skipping onset model because checkpoints already exist in {onset_out_dir}")
+        else:
+            run_cmd(f"{sys.executable} scripts/train_pt.py --dataset_dir {onset_data_dir} --feats_dir {feats_dir} --out_dir {onset_out_dir} --model_type onset --epochs 5")
 
     buckets = []
     # User requested 8 training runs (Easy, Medium, Hard, Challenge for Single/Double)
@@ -65,7 +88,9 @@ def main():
             continue
 
         out_dir = os.path.join(models_dir, bucket)
-        # Using PyTorch training script
+        if args.skip_existing_models and has_pytorch_checkpoints(out_dir):
+            print(f"Skipping existing bucket {bucket} because checkpoints already exist in {out_dir}")
+            continue
         run_cmd(f"{sys.executable} scripts/train_pt.py --dataset_dir {bucket_dir} --feats_dir {feats_dir} --out_dir {out_dir} --model_type sym --epochs 10")
 
     print("=== Step 4: Train FFR Model ===")
@@ -88,9 +113,11 @@ def main():
         run_cmd(f"{sys.executable} {os.path.join(ffr_script_dir, 'build_features.py')} {ffr_processed_charts} {ffr_csv}")
 
         print("Training FFR Model...")
-        # Step 4c: Train the model
-        cmd = f"{sys.executable} {os.path.join(ffr_script_dir, 'train_model.py')} {ffr_csv} {ffr_models_dir}"
-        subprocess.check_call(cmd, shell=True, env=env)
+        if args.skip_existing_models and has_ffr_models(ffr_models_dir):
+            print(f"Skipping FFR training because model files already exist in {ffr_models_dir}")
+        else:
+            cmd = f"{sys.executable} {os.path.join(ffr_script_dir, 'train_model.py')} {ffr_csv} {ffr_models_dir}"
+            subprocess.check_call(cmd, shell=True, env=env)
 
 if __name__ == '__main__':
     main()
