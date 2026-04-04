@@ -20,7 +20,8 @@ Core training/integration work has been advanced substantially.
   - `dance-double`
 - Fixed the submodule difficulty-training script so global NaN cleanup does not silently eliminate one mode.
 - Added detailed documentation of findings in `docs/TRAINING_ANALYSIS_2026-04-04.md`.
-- Updated versioning/documentation files to `0.2.2`.
+- Added corpus audit tooling/report in `scripts/audit_corpus.py` and `docs/CORPUS_AUDIT_2026-04-04.md`.
+- Updated versioning/documentation files to `0.2.3`.
 
 ## Key Findings
 
@@ -29,6 +30,8 @@ Core training/integration work has been advanced substantially.
 - The DDC symbolic training path does not automatically collapse chart content to tap-only tokens.
 - The difficulty evaluator *does* currently reduce charts to tap notes only, so shock arrows/mines/holds/rolls/lifts/fakes are not fully represented there.
 - `.ssc`-only information is still outside the current extraction path.
+- Corpus audit confirmed 20 `.ssc` files exist in the raw official DDR corpus and are currently left unused.
+- Corpus audit confirmed extracted note vocabulary contains substantial non-binary symbols: `2`, `3`, and `M`.
 
 ## Important Repository Notes
 

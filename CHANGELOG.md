@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2026-04-04
+
+### Added
+- Added a reproducible corpus-audit script at `scripts/audit_corpus.py`.
+- Added `docs/CORPUS_AUDIT_2026-04-04.md` documenting raw `.sm`/`.ssc` inventory, note-symbol distribution, and per-bucket special-symbol coverage.
+
+### Changed
+- Documented that 20 `.ssc` files exist in the official DDR corpus but are not yet ingested by the current extractor.
+- Documented that the extracted DDC symbolic corpus contains substantial non-binary note symbols (`2`, `3`, `M`) and is therefore not tap-only.
+
 ## [0.2.2] - 2026-04-04
 
 ### Added
