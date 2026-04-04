@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.27] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_12_2026-04-04.md` capturing the active refresh crossing from `Epoch 8/10` into `Epoch 9/10` during the second practical bucket.
+
+### Changed
+- Documented the next monitoring milestone for the active refresh: `dance-single_Medium` advanced to at least `model_08.pth`, `Epoch 8/10` completed with validation output, and the active log progressed into `Epoch 9/10`.
+
 ## [0.2.26] - 2026-04-04
 
 ### Added
