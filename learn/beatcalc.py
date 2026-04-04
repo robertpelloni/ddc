@@ -24,14 +24,9 @@ class BeatCalc(object):
             assert beat >= 0.0
             if beat in stops:
                 stops[beat] += stop
-            stops[beat] = stop
-<<<<<<< HEAD
-        beat_stop = [
-            x for x in sorted(stops.items(), key=lambda x: x[0]) if x[1] != 0.0
-        ]
-=======
+            else:
+                stops[beat] = stop
         beat_stop = [x for x in sorted(stops.items(), key=lambda x: x[0]) if x[1] != 0.0]
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
 
         self.offset = offset
         self.bpms = beat_bpm
@@ -42,11 +37,7 @@ class BeatCalc(object):
         # insert line segments for stops
         for beat, stop in beat_stop:
             beats_list = [x[0] for x in beat_bps]
-<<<<<<< HEAD
             seg_idx = np.searchsorted(np.array(beats_list), beat, side="right")
-=======
-            seg_idx = np.searchsorted(np.array(beats_list), beat, side='right')
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
             _, bps = beat_bps[seg_idx - 1]
 
             beat_bps.insert(seg_idx, (beat + _EPSILON, bps))
@@ -70,22 +61,14 @@ class BeatCalc(object):
         self.segment_spb = 1.0 / self.segment_bps
 
     def beat_to_time(self, beat):
-<<<<<<< HEAD
         seg_idx = np.searchsorted(self.segment_beat, beat, side="right") - 1
-=======
-        seg_idx = np.searchsorted(self.segment_beat, beat, side='right') - 1
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
         beat_left = self.segment_beat[seg_idx]
         time_left = self.segment_time[seg_idx]
         spb = self.segment_spb[seg_idx]
         return time_left + ((beat - beat_left) * spb)
 
     def time_to_beat(self, time):
-<<<<<<< HEAD
         seg_idx = np.searchsorted(self.segment_time, time, side="right") - 1
-=======
-        seg_idx = np.searchsorted(self.segment_time, time, side='right') - 1
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
         time_left = self.segment_time[seg_idx]
         beat_left = self.segment_beat[seg_idx]
         bps = self.segment_bps[seg_idx]
@@ -99,10 +82,6 @@ if __name__ == "__main__":
     print(bc.beat_to_time(8.0))
     print(bc.beat_to_time(16.0))
     print(bc.beat_to_time(32.0))
-<<<<<<< HEAD
     print("-" * 80)
-=======
-    print('-' * 80)
->>>>>>> origin/ddc-modernization-and-integration-14116118131799338522
     print(bc.time_to_beat(0.0))
     print(bc.time_to_beat(1.0))

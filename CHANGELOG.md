@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.12] - 2026-04-04
+
+### Changed
+- Resolved merge-conflict markers in `autochart.py`, `learn/beatcalc.py`, `learn/data_gen.py`, `learn/models_v2.py`, `scripts/train_v2.py`, `scripts/smd_1_extract.sh`, and `scripts/smd_4_analyze.sh`.
+- Refreshed the repository health audit and reduced unresolved merge-conflict-marker files from **9** to **2**.
+
 ## [0.2.11] - 2026-04-04
 
 ### Changed

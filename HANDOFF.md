@@ -31,9 +31,10 @@ Core training/integration work has been advanced substantially.
 - Added `scripts/compare_bucket_counts.py` and `docs/BUCKET_SPLIT_DELTA_2026-04-04.md` to quantify exact downstream split-file deltas after `.ssc`-inclusive preparation.
 - Added `scripts/audit_repo_health.py` and `docs/REPO_HEALTH_AUDIT_2026-04-04.md` to quantify remaining normalization blockers in the repository.
 - Resolved top-level conflict-marker files in `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `GPT.md`, `LLM_INSTRUCTIONS.md`, and `setup.py`.
-- Refreshed the repo-health audit and reduced unresolved merge-conflict-marker files from 15 to 9.
+- Resolved conflict-marker files in `autochart.py`, `learn/beatcalc.py`, `learn/data_gen.py`, `learn/models_v2.py`, `scripts/train_v2.py`, `scripts/smd_1_extract.sh`, and `scripts/smd_4_analyze.sh`.
+- Refreshed the repo-health audit and reduced unresolved merge-conflict-marker files from 15 to 2.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.11`.
+- Updated versioning/documentation files to `0.2.12`.
 
 ## Key Findings
 
@@ -59,7 +60,7 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Resolve the remaining merge-conflict-marker files identified in `docs/REPO_HEALTH_AUDIT_2026-04-04.md`.
+1. Decide whether to clean the remaining two conflict-marker files in `ddc_stepmania/learn/*` or leave them quarantined as legacy subtree content.
 2. Rerun full downstream filtering/feature extraction/training against the expanded `.ssc`-inclusive corpus.
 3. Retrain the difficulty evaluator against the refreshed `.ssc`-inclusive loader path.
 4. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.

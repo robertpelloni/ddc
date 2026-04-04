@@ -28,7 +28,7 @@ The project is organized as follows:
 
 ## Build Information
 
-- **Version**: 0.2.11
+- **Version**: 0.2.12
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -51,7 +51,7 @@ The project is organized as follows:
 - The FFR difficulty-data loader now prefers `.ssc` over `.sm` within each song directory.
 - A refreshed local extraction confirmed corpus growth from 1234 to 1254 songs and from 9241 to 9403 charts.
 - A probe run of the refreshed FFR preprocessing path confirmed approximately 1255 simfiles and 9407 serialized charts are reachable.
-- Repository-health cleanup reduced unresolved merge-conflict-marker files from 15 to 9.
+- Repository-health cleanup reduced unresolved merge-conflict-marker files from 15 to 2 through successive cleanup passes.
 - Full retraining against that refreshed corpus is still pending/recommended.
 
 ### Additional models
