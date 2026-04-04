@@ -52,14 +52,15 @@ Core training/integration work has been advanced substantially.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_13_2026-04-04.md`, showing `dance-single_Medium` advancing to at least `model_09.pth`, transition into `Epoch 10/10`, and two active Python processes visible while the run continued without interruption.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_14_2026-04-04.md`, showing all practical single-mode buckets appearing complete and `dance-double_Easy` advancing to at least `model_08.pth` as the active frontier.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_15_2026-04-04.md`, showing `dance-double_Easy` advancing to at least `model_09.pth` and the active log progressing into `Epoch 10/10` for the current double-mode bucket.
+- Added `docs/TRAINING_REFRESH_COMPLETION_2026-04-04.md`, recording the first full completion-state inventory: all practical single/double placement buckets show complete checkpoint sets and refreshed FFR artifacts are present for both `dance-single` and `dance-double`.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.30`.
+- Updated versioning/documentation files to `0.2.31`.
 
 ## Key Findings
 
 - Beginner placement was not part of the final 8-run practical export plan.
 - The active `.ssc`-inclusive refresh has now progressed beyond the first practical bucket: `dance-single_Easy` shows a full observed 10-checkpoint set and `dance-single_Medium` has already accumulated at least 6 checkpoints.
-- The current active frontier remains in double-mode practical training: all practical single-mode buckets appear complete, and `dance-double_Easy` is now the newest artifact frontier at at least `model_09.pth` with an `Epoch 10/10` log window observed.
+- The refresh now appears complete for the core user-requested retraining objective: all practical single/double placement buckets show complete checkpoint sets, and refreshed floating-point FFR artifacts are present for both `dance-single` and `dance-double`.
 - `dance-double_Beginner` has effectively no usable dataset size in the observed official-pack corpus.
 - The DDC symbolic training path does not automatically collapse chart content to tap-only tokens.
 - The difficulty evaluator *does* currently reduce charts to tap notes only, so shock arrows/mines/holds/rolls/lifts/fakes are not fully represented there.
@@ -81,10 +82,10 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Continue monitoring the active refresh log at `data/ssc_refresh_training.log`.
-2. Verify completion of `dance-double_Easy` and emergence of later double-mode practical checkpoint directories under `data/ssc_refresh_work/models/`.
-3. Verify refreshed difficulty-model output eventually appears under `data/ssc_refresh_work/ffr_models/`.
-4. After training completes, document final artifact inventory and export a clean deployment-ready model bundle.
-5. Add `dance-single_Beginner` placement training as an optional extension if still desired.
-6. Extend the difficulty evaluator to include non-tap object semantics.
-7. Optionally normalize the quarantined `ddc_stepmania/` conflict-marker files in a dedicated legacy-maintenance pass later.
+1. Export or package a clean refreshed deployment-ready model bundle from `data/ssc_refresh_work`.
+2. Verify ArrowVortex integration against the refreshed artifacts.
+3. Optionally run a post-refresh validation pass against representative audio/song inputs.
+4. Add `dance-single_Beginner` placement training as an optional extension if still desired.
+5. Extend the difficulty evaluator to include non-tap object semantics.
+6. Optionally normalize the quarantined `ddc_stepmania/` conflict-marker files in a dedicated legacy-maintenance pass later.
+7. Decide whether and how any final model artifacts should be published or distributed outside the local workspace.

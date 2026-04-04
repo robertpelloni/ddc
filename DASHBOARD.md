@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.30  
+**Version:** 0.2.31  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -162,6 +162,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_PROGRESS_15_2026-04-04.md`  
 **Description:** Follow-up runtime snapshot showing the active double-mode bucket reaching at least its ninth checkpoint and entering `Epoch 10/10`.
 
+#### 29. Training Refresh Completion Report
+**Location:** `docs/TRAINING_REFRESH_COMPLETION_2026-04-04.md`  
+**Description:** Completion-state inventory showing full practical 8-bucket placement coverage and refreshed floating-point FFR artifacts for both modes.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -186,6 +190,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Observed further second-bucket milestone: `dance-single_Medium` advanced to at least `model_09.pth`, the active log progressed into `Epoch 10/10`, and two active Python processes were visible while the run continued without interruption.
 - Observed major curriculum milestone: all practical single-mode buckets now appear complete and `dance-double_Easy` became the active frontier, advancing to at least `model_08.pth`.
 - Observed continued double-mode milestone: `dance-double_Easy` advanced to at least `model_09.pth`, and the active log progressed into `Epoch 10/10` for the current double-mode bucket.
+- Observed completion milestone: all practical single/double placement buckets now show complete checkpoint sets, and refreshed FFR difficulty-model artifacts (`dance-single.p`, `dance-double.p`) are present in `data/ssc_refresh_work/ffr_models/`.
 
 ## Important Operational Notes
 
