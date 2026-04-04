@@ -32,10 +32,11 @@ The project is organized as follows:
 - **`docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md`**: Later in-flight progress snapshot showing transition from onset into bucketed placement training.
 - **`docs/TRAINING_REFRESH_PROGRESS_3_2026-04-04.md`**: Later in-flight progress snapshot showing the first practical bucket checkpoint being produced.
 - **`docs/TRAINING_REFRESH_PROGRESS_4_2026-04-04.md`**: Later in-flight progress snapshot showing continued checkpoint accumulation in the first practical bucket.
+- **`docs/TRAINING_REFRESH_PROGRESS_5_2026-04-04.md`**: Later in-flight progress snapshot showing the first practical bucket reaching at least its third checkpoint.
 
 ## Build Information
 
-- **Version**: 0.2.19
+- **Version**: 0.2.20
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -65,6 +66,7 @@ The project is organized as follows:
 - Observed later milestone: the refresh moved into practical SymNet bucket training and created the first bucket output directory.
 - Observed next milestone: the first practical bucket emitted `dance-single_Easy/model_01.pth`.
 - Observed continued milestone: `dance-single_Easy` advanced to at least `model_02.pth` while the bucket remained in progress.
+- Observed further milestone: `dance-single_Easy` advanced to at least `model_03.pth` while later-epoch (`4/10`) log output was observed.
 
 ### Additional models
 

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.20] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_5_2026-04-04.md` capturing continued in-flight progression of the first practical placement bucket during the active `.ssc`-inclusive refresh run.
+
+### Changed
+- Documented the next in-flight milestone for the active refresh: `dance-single_Easy` advanced to at least `model_03.pth` and later-epoch (`4/10`) log output was observed.
+
 ## [0.2.19] - 2026-04-04
 
 ### Added

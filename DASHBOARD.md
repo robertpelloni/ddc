@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.19  
+**Version:** 0.2.20  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -118,6 +118,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_PROGRESS_4_2026-04-04.md`  
 **Description:** Later runtime snapshot showing continued checkpoint accumulation within the first practical bucket.
 
+#### 18. Training Refresh Progress Snapshot #5
+**Location:** `docs/TRAINING_REFRESH_PROGRESS_5_2026-04-04.md`  
+**Description:** Later runtime snapshot showing the first practical bucket progressing to at least its third checkpoint and later-epoch training output.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -131,6 +135,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Observed later in-flight milestone: the refresh transitioned into practical SymNet bucket training and created `data/ssc_refresh_work/models/dance-single_Easy/`.
 - Observed next in-flight milestone: `data/ssc_refresh_work/models/dance-single_Easy/model_01.pth` appeared, confirming practical bucket checkpoint production.
 - Observed continued in-flight progress: `dance-single_Easy` advanced to at least `model_02.pth`, confirming ongoing checkpoint accumulation within the first practical bucket.
+- Observed further in-flight progress: `dance-single_Easy` advanced to at least `model_03.pth`, with later-epoch (`4/10`) log output observed.
 
 ## Important Operational Notes
 
