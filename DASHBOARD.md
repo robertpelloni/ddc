@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.7  
+**Version:** 0.2.8  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -77,6 +77,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 #### 7. Note Object Semantics Audit
 **Location:** `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`  
 **Description:** Detailed semantic audit of observed chart symbols, including taps, hold-heads, tails, and mines.
+
+#### 8. Retraining Refresh Plan
+**Location:** `docs/RETRAINING_REFRESH_PLAN_2026-04-04.md`  
+**Description:** Step-by-step plan for the next `.ssc`-inclusive full model refresh.
 
 ## Extraction Status
 
