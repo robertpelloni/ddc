@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.24  
+**Version:** 0.2.25  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -138,6 +138,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_PROGRESS_9_2026-04-04.md`  
 **Description:** Follow-up runtime snapshot showing continued in-flight progress inside the second practical bucket after that transition.
 
+#### 23. Training Refresh Progress Snapshot #10
+**Location:** `docs/TRAINING_REFRESH_PROGRESS_10_2026-04-04.md`  
+**Description:** Follow-up runtime snapshot showing the second practical bucket advancing to at least its seventh checkpoint and entering `Epoch 8/10`.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -156,6 +160,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Observed further in-flight progress: `dance-single_Easy` advanced to at least `model_05.pth`, with later-epoch (`6/10`) log output observed.
 - Observed major in-flight milestone: `dance-single_Easy` reached a full observed 10-checkpoint set and `dance-single_Medium` appeared, advancing to at least `model_06.pth` while later-epoch (`7/10`) log output was observed.
 - Observed continued second-bucket progress: the refresh remained alive, log output advanced substantially deeper into `Epoch 7/10`, and artifact recency still pointed to `dance-single_Medium` as the active practical bucket frontier.
+- Observed further second-bucket progress: `dance-single_Medium` advanced to at least `model_07.pth`, and the active log progressed into `Epoch 8/10`.
 
 ## Important Operational Notes
 
