@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.26  
+**Version:** 0.2.27  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -146,6 +146,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_PROGRESS_11_2026-04-04.md`  
 **Description:** Follow-up runtime snapshot showing the second practical bucket progressing substantially deeper into the late portion of `Epoch 8/10`.
 
+#### 25. Training Refresh Progress Snapshot #12
+**Location:** `docs/TRAINING_REFRESH_PROGRESS_12_2026-04-04.md`  
+**Description:** Follow-up runtime snapshot showing the second practical bucket advancing to at least its eighth checkpoint and entering `Epoch 9/10`.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -166,6 +170,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Observed continued second-bucket progress: the refresh remained alive, log output advanced substantially deeper into `Epoch 7/10`, and artifact recency still pointed to `dance-single_Medium` as the active practical bucket frontier.
 - Observed further second-bucket progress: `dance-single_Medium` advanced to at least `model_07.pth`, and the active log progressed into `Epoch 8/10`.
 - Observed continued second-bucket execution: `dance-single_Medium` remained the active artifact frontier while the monitored log progressed substantially deeper into the late portion of `Epoch 8/10`.
+- Observed next second-bucket milestone: `dance-single_Medium` advanced to at least `model_08.pth`, `Epoch 8/10` completed with validation output, and the active log progressed into `Epoch 9/10`.
 
 ## Important Operational Notes
 
