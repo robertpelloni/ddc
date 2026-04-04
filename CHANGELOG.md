@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.9] - 2026-04-04
+
+### Added
+- Added `scripts/compare_bucket_counts.py` for reproducible before/after split-count comparison between prepared work directories.
+- Added `docs/BUCKET_SPLIT_DELTA_2026-04-04.md` documenting the exact train/valid/test deltas in every bucket after the `.ssc`-inclusive refresh.
+
+### Changed
+- Documented the exact downstream DDC training-input expansion for the practical 8-bucket plan.
+
 ## [0.2.8] - 2026-04-04
 
 ### Added
