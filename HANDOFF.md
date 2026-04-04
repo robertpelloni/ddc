@@ -49,14 +49,15 @@ Core training/integration work has been advanced substantially.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_10_2026-04-04.md`, showing `dance-single_Medium` advancing to at least `model_07.pth` while the active log progressed into `Epoch 8/10`.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_11_2026-04-04.md`, showing the run remaining alive while the monitored log progressed substantially deeper into the late portion of `Epoch 8/10` with `dance-single_Medium` still the active frontier.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_12_2026-04-04.md`, showing `dance-single_Medium` advancing to at least `model_08.pth`, completion of `Epoch 8/10` validation, and transition into `Epoch 9/10`.
+- Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_13_2026-04-04.md`, showing `dance-single_Medium` advancing to at least `model_09.pth`, transition into `Epoch 10/10`, and two active Python processes visible while the run continued without interruption.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.27`.
+- Updated versioning/documentation files to `0.2.28`.
 
 ## Key Findings
 
 - Beginner placement was not part of the final 8-run practical export plan.
 - The active `.ssc`-inclusive refresh has now progressed beyond the first practical bucket: `dance-single_Easy` shows a full observed 10-checkpoint set and `dance-single_Medium` has already accumulated at least 6 checkpoints.
-- The current active frontier still appears to be `dance-single_Medium`, supported by newer checkpoint timestamps than `dance-single_Easy`, an observed `model_08.pth`, completion of `Epoch 8/10`, and a subsequent `Epoch 9/10` log window.
+- The current active frontier still appears to be `dance-single_Medium`, supported by newer checkpoint timestamps than `dance-single_Easy`, an observed `model_09.pth`, and a subsequent `Epoch 10/10` log window.
 - `dance-double_Beginner` has effectively no usable dataset size in the observed official-pack corpus.
 - The DDC symbolic training path does not automatically collapse chart content to tap-only tokens.
 - The difficulty evaluator *does* currently reduce charts to tap notes only, so shock arrows/mines/holds/rolls/lifts/fakes are not fully represented there.

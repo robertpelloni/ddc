@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.28] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_13_2026-04-04.md` capturing the active refresh advancing into `Epoch 10/10` during the second practical bucket.
+
+### Changed
+- Documented the next monitoring milestone for the active refresh: `dance-single_Medium` advanced to at least `model_09.pth`, the active log progressed into `Epoch 10/10`, and two active Python processes were visible while the run continued without interruption.
+
 ## [0.2.27] - 2026-04-04
 
 ### Added
