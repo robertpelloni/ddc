@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.30] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_15_2026-04-04.md` capturing continued double-mode progress with `dance-double_Easy` reaching at least its ninth checkpoint.
+
+### Changed
+- Documented the next monitoring milestone for the active refresh: `dance-double_Easy` advanced to at least `model_09.pth`, the active log progressed into `Epoch 10/10` for the active double-mode bucket, and the refresh remained busy with multiple Python processes visible.
+
 ## [0.2.29] - 2026-04-04
 
 ### Added
