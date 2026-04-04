@@ -45,13 +45,15 @@ Core training/integration work has been advanced substantially.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_6_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_04.pth` while later-epoch (`5/10`) log output was observed.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_7_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_05.pth` while later-epoch (`6/10`) log output was observed.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_8_2026-04-04.md`, showing `dance-single_Easy` reaching a full observed 10-checkpoint set and `dance-single_Medium` advancing to at least `model_06.pth` while later-epoch (`7/10`) log output was observed.
+- Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_9_2026-04-04.md`, showing the run staying alive deeper into `Epoch 7/10` with artifact recency still indicating `dance-single_Medium` as the active practical bucket frontier.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.23`.
+- Updated versioning/documentation files to `0.2.24`.
 
 ## Key Findings
 
 - Beginner placement was not part of the final 8-run practical export plan.
 - The active `.ssc`-inclusive refresh has now progressed beyond the first practical bucket: `dance-single_Easy` shows a full observed 10-checkpoint set and `dance-single_Medium` has already accumulated at least 6 checkpoints.
+- The current active frontier still appears to be `dance-single_Medium`, supported by newer checkpoint timestamps than `dance-single_Easy` and a later in-flight `Epoch 7/10` log window.
 - `dance-double_Beginner` has effectively no usable dataset size in the observed official-pack corpus.
 - The DDC symbolic training path does not automatically collapse chart content to tap-only tokens.
 - The difficulty evaluator *does* currently reduce charts to tap notes only, so shock arrows/mines/holds/rolls/lifts/fakes are not fully represented there.
