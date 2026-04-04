@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.14] - 2026-04-04
+
+### Added
+- Added `scripts/audit_refresh_readiness.py` and `docs/SSC_REFRESH_READINESS_2026-04-04.md` to document the exact state of the `.ssc`-inclusive refresh work directory.
+
+### Changed
+- Added resume-friendly skip flags to `scripts/train_all.py` so the `.ssc`-inclusive refresh can be resumed without redoing completed prep/feature steps or retraining buckets that already have artifacts.
+
 ## [0.2.13] - 2026-04-04
 
 ### Added
