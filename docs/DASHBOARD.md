@@ -29,10 +29,11 @@ The project is organized as follows:
 - **`docs/SSC_REFRESH_READINESS_2026-04-04.md`**: Readiness/status audit for the prepared `.ssc`-inclusive refresh work directory.
 - **`docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`**: Launch record for the active `.ssc`-inclusive refresh training run.
 - **`docs/TRAINING_REFRESH_PROGRESS_2026-04-04.md`**: In-flight progress snapshot for the active refresh run.
+- **`docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md`**: Later in-flight progress snapshot showing transition from onset into bucketed placement training.
 
 ## Build Information
 
-- **Version**: 0.2.16
+- **Version**: 0.2.17
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -58,7 +59,8 @@ The project is organized as follows:
 - Repository-health cleanup reduced unresolved merge-conflict-marker files from 15 to 2 through successive cleanup passes.
 - The resume-friendly `.ssc`-inclusive refresh has now been launched against `data/ssc_refresh_work`.
 - Active runtime log: `data/ssc_refresh_training.log`
-- Observed in-flight milestone: onset training advanced into epoch 4/5 and initial onset checkpoints appeared in the refresh work directory.
+- Observed in-flight milestone: onset training advanced through its checkpoint set in the refresh work directory.
+- Observed later milestone: the refresh moved into practical SymNet bucket training and created the first bucket output directory.
 
 ### Additional models
 

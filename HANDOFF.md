@@ -38,8 +38,9 @@ Core training/integration work has been advanced substantially.
 - Added resume-friendly skip flags to `scripts/train_all.py` so the refresh run can be restarted safely without repeating completed work.
 - Launched the actual `.ssc`-inclusive refresh run and documented it in `docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`.
 - Captured an in-flight runtime progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_2026-04-04.md`, including initial onset checkpoint production.
+- Captured a later progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md`, showing onset checkpoint-set completion and transition into the first practical SymNet bucket stage.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.16`.
+- Updated versioning/documentation files to `0.2.17`.
 
 ## Key Findings
 
@@ -65,9 +66,9 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Monitor the active refresh log at `data/ssc_refresh_training.log`.
-2. Verify refreshed onset / placement checkpoint output under `data/ssc_refresh_work/models/`.
-3. Verify refreshed difficulty-model output under `data/ssc_refresh_work/ffr_models/`.
+1. Continue monitoring the active refresh log at `data/ssc_refresh_training.log`.
+2. Verify completed checkpoint output appears for `dance-single_Easy` and subsequent practical 8-bucket directories under `data/ssc_refresh_work/models/`.
+3. Verify refreshed difficulty-model output eventually appears under `data/ssc_refresh_work/ffr_models/`.
 4. After training completes, document final artifact inventory and export a clean deployment-ready model bundle.
 5. Add `dance-single_Beginner` placement training as an optional extension if still desired.
 6. Extend the difficulty evaluator to include non-tap object semantics.
