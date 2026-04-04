@@ -44,6 +44,12 @@ Generate stepcharts for a song or directory of songs:
 python autochart.py path/to/song.mp3 --models_dir path/to/models --ffr_dir path/to/ffr_models
 ```
 
+For the refreshed local `.ssc`-inclusive run, the current direct-use paths are:
+
+```bash
+python autochart.py path/to/song.mp3 --models_dir data/ssc_refresh_work/models --ffr_dir data/ssc_refresh_work/ffr_models
+```
+
 Or for a directory:
 
 ```bash
@@ -81,6 +87,8 @@ Key project analysis/report documents:
 - `docs/CORPUS_AUDIT_2026-04-04.md`
 - `docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`
 - `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`
+- `docs/TRAINING_REFRESH_COMPLETION_2026-04-04.md`
+- `docs/REFRESH_DEPLOYMENT_AND_ARROWVORTEX_VERIFICATION_2026-04-04.md`
 
 ## Features
 

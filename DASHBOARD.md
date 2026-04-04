@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.31  
+**Version:** 0.2.32  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -166,6 +166,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_COMPLETION_2026-04-04.md`  
 **Description:** Completion-state inventory showing full practical 8-bucket placement coverage and refreshed floating-point FFR artifacts for both modes.
 
+#### 30. Refresh Deployment and ArrowVortex Verification
+**Location:** `docs/REFRESH_DEPLOYMENT_AND_ARROWVORTEX_VERIFICATION_2026-04-04.md`  
+**Description:** Post-refresh verification of runtime compatibility, ArrowVortex-oriented usage paths, and local bundle export strategy.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -191,6 +195,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Observed major curriculum milestone: all practical single-mode buckets now appear complete and `dance-double_Easy` became the active frontier, advancing to at least `model_08.pth`.
 - Observed continued double-mode milestone: `dance-double_Easy` advanced to at least `model_09.pth`, and the active log progressed into `Epoch 10/10` for the current double-mode bucket.
 - Observed completion milestone: all practical single/double placement buckets now show complete checkpoint sets, and refreshed FFR difficulty-model artifacts (`dance-single.p`, `dance-double.p`) are present in `data/ssc_refresh_work/ffr_models/`.
+- Verified post-refresh deployment compatibility: `AutoChart` initialized successfully against `data/ssc_refresh_work/models` + `data/ssc_refresh_work/ffr_models`, and bundle packaging was validated in dry-run mode via `scripts/package_refresh_bundle.py`.
 
 ## Important Operational Notes
 

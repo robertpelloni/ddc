@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.32] - 2026-04-04
+
+### Added
+- Added `scripts/package_refresh_bundle.py` to package a completed `.ssc`-inclusive refresh work directory into a cleaner deployment bundle layout.
+- Added `docs/REFRESH_DEPLOYMENT_AND_ARROWVORTEX_VERIFICATION_2026-04-04.md` documenting runtime compatibility, bundle-export strategy, and ArrowVortex-oriented usage for the refreshed artifacts.
+
+### Changed
+- Documented the next post-refresh milestone for the completed refresh: verified `AutoChart` initialization against `data/ssc_refresh_work/models` + `data/ssc_refresh_work/ffr_models`, validated bundle packaging in dry-run mode, and updated usage docs to reference the refreshed local artifact paths.
+
 ## [0.2.31] - 2026-04-04
 
 ### Added
