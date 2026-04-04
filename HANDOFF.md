@@ -43,8 +43,9 @@ Core training/integration work has been advanced substantially.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_4_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_02.pth` while remaining in progress.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_5_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_03.pth` while later-epoch (`4/10`) log output was observed.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_6_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_04.pth` while later-epoch (`5/10`) log output was observed.
+- Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_7_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_05.pth` while later-epoch (`6/10`) log output was observed.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.21`.
+- Updated versioning/documentation files to `0.2.22`.
 
 ## Key Findings
 
