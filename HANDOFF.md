@@ -23,7 +23,8 @@ Core training/integration work has been advanced substantially.
 - Added corpus audit tooling/report in `scripts/audit_corpus.py` and `docs/CORPUS_AUDIT_2026-04-04.md`.
 - Extended `dataset/extract_json.py` to support `.ssc` files via `simfile`.
 - Validated that refreshed local extraction increases coverage from 1234 to 1254 songs and from 9241 to 9403 charts.
-- Updated versioning/documentation files to `0.2.4`.
+- Documented the exact `.ssc`-driven corpus delta in `docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`.
+- Updated versioning/documentation files to `0.2.5`.
 
 ## Key Findings
 
@@ -43,8 +44,8 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Audit actual note-symbol coverage in the official DDR corpus.
-2. Add `.ssc` ingestion.
+1. Rerun full downstream filtering/feature extraction/training against the expanded `.ssc`-inclusive corpus.
+2. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
 3. Add `dance-single_Beginner` placement training as an optional extension.
 4. Extend the difficulty evaluator to include non-tap object semantics.
 5. Create a clean ArrowVortex deploy/export path for final checkpoints.

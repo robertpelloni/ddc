@@ -149,8 +149,9 @@ The evaluator remains a floating-point regressor, which satisfies the requiremen
 A companion raw/extracted corpus audit is available at:
 
 - `docs/CORPUS_AUDIT_2026-04-04.md`
+- `docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`
 
-That report quantifies:
+Those reports quantify:
 
 - raw `.sm` vs `.ssc` inventory
 - note-symbol frequency in extracted JSON

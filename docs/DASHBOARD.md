@@ -20,10 +20,11 @@ The project is organized as follows:
 - **`ddc_onset/`**: Submodule for onset detection.
 - **`docs/TRAINING_ANALYSIS_2026-04-04.md`**: Detailed report of training coverage, omissions, findings, and recommendations.
 - **`docs/CORPUS_AUDIT_2026-04-04.md`**: Detailed report of `.sm`/`.ssc` inventory and note-symbol coverage in the extracted corpus.
+- **`docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`**: Delta report quantifying the exact increase in songs/charts/bucket coverage from `.ssc` support.
 
 ## Build Information
 
-- **Version**: 0.2.4
+- **Version**: 0.2.5
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
