@@ -41,8 +41,9 @@ Core training/integration work has been advanced substantially.
 - Captured a later progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md`, showing onset checkpoint-set completion and transition into the first practical SymNet bucket stage.
 - Captured a further progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_3_2026-04-04.md`, showing the first practical bucket checkpoint (`dance-single_Easy/model_01.pth`) being produced.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_4_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_02.pth` while remaining in progress.
+- Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_5_2026-04-04.md`, showing `dance-single_Easy` advancing to at least `model_03.pth` while later-epoch (`4/10`) log output was observed.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.19`.
+- Updated versioning/documentation files to `0.2.20`.
 
 ## Key Findings
 
