@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.11  
+**Version:** 0.2.12  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -96,7 +96,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - The FFR difficulty-data loader now also prefers `.ssc` over `.sm` where available.
 - A refreshed local extraction confirmed growth from **1234** to **1254** extracted songs and from **9241** to **9403** charts when `.ssc`-only songs are included.
 - A probe run of the refreshed FFR preprocessing path confirmed approximately **1255 simfiles** and **9407 serialized charts** are now reachable.
-- Repository-health cleanup reduced unresolved merge-conflict-marker files from **15** to **9**.
+- Repository-health cleanup reduced unresolved merge-conflict-marker files from **15** to **2** through successive cleanup passes.
 - Full retraining against the refreshed `.ssc`-inclusive extraction is still recommended as the next model-refresh step.
 
 ## Important Operational Notes
