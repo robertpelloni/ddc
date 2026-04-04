@@ -53,14 +53,20 @@ Core training/integration work has been advanced substantially.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_14_2026-04-04.md`, showing all practical single-mode buckets appearing complete and `dance-double_Easy` advancing to at least `model_08.pth` as the active frontier.
 - Captured another progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_15_2026-04-04.md`, showing `dance-double_Easy` advancing to at least `model_09.pth` and the active log progressing into `Epoch 10/10` for the current double-mode bucket.
 - Added `docs/TRAINING_REFRESH_COMPLETION_2026-04-04.md`, recording the first full completion-state inventory: all practical single/double placement buckets show complete checkpoint sets and refreshed FFR artifacts are present for both `dance-single` and `dance-double`.
+- Added `scripts/package_refresh_bundle.py` to package a completed refresh work directory into a cleaner deployment bundle layout.
+- Added `docs/REFRESH_DEPLOYMENT_AND_ARROWVORTEX_VERIFICATION_2026-04-04.md`, documenting refreshed runtime compatibility, ArrowVortex-oriented usage paths, and local bundle-export strategy.
+- Verified `AutoChart` initialization succeeds with `data/ssc_refresh_work/models` and `data/ssc_refresh_work/ffr_models`.
+- Validated bundle packaging in dry-run mode via `python scripts/package_refresh_bundle.py data/ssc_refresh_work C:/Users/hyper/AppData/Local/Temp/ssc_refresh_bundle --latest_only --dry_run`.
+- Updated `README.md` and `models_v3/README.md` to reference the refreshed local artifact paths and bundle-packaging command.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.31`.
+- Updated versioning/documentation files to `0.2.32`.
 
 ## Key Findings
 
 - Beginner placement was not part of the final 8-run practical export plan.
 - The active `.ssc`-inclusive refresh has now progressed beyond the first practical bucket: `dance-single_Easy` shows a full observed 10-checkpoint set and `dance-single_Medium` has already accumulated at least 6 checkpoints.
 - The refresh now appears complete for the core user-requested retraining objective: all practical single/double placement buckets show complete checkpoint sets, and refreshed floating-point FFR artifacts are present for both `dance-single` and `dance-double`.
+- The refreshed artifact layout is structurally compatible with the current AutoChart / ArrowVortex-oriented runtime path: `models_dir=data/ssc_refresh_work/models` and `ffr_dir=data/ssc_refresh_work/ffr_models` initialize successfully.
 - `dance-double_Beginner` has effectively no usable dataset size in the observed official-pack corpus.
 - The DDC symbolic training path does not automatically collapse chart content to tap-only tokens.
 - The difficulty evaluator *does* currently reduce charts to tap notes only, so shock arrows/mines/holds/rolls/lifts/fakes are not fully represented there.
@@ -82,9 +88,9 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Export or package a clean refreshed deployment-ready model bundle from `data/ssc_refresh_work`.
-2. Verify ArrowVortex integration against the refreshed artifacts.
-3. Optionally run a post-refresh validation pass against representative audio/song inputs.
+1. Run `scripts/package_refresh_bundle.py` without `--dry_run` to create a local deployment-ready bundle when ready.
+2. Perform a small end-to-end ArrowVortex-oriented smoke test using `infer/ddc_server.py --models_dir data/ssc_refresh_work/models --ffr_dir data/ssc_refresh_work/ffr_models`.
+3. Optionally run a representative post-refresh AutoChart validation pass against a few songs/audio inputs.
 4. Add `dance-single_Beginner` placement training as an optional extension if still desired.
 5. Extend the difficulty evaluator to include non-tap object semantics.
 6. Optionally normalize the quarantined `ddc_stepmania/` conflict-marker files in a dedicated legacy-maintenance pass later.

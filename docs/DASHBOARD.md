@@ -44,10 +44,11 @@ The project is organized as follows:
 - **`docs/TRAINING_REFRESH_PROGRESS_14_2026-04-04.md`**: Major in-flight progress snapshot showing practical single-mode completion and transition into double-mode practical training.
 - **`docs/TRAINING_REFRESH_PROGRESS_15_2026-04-04.md`**: Follow-up in-flight progress snapshot showing the active double-mode bucket reaching at least its ninth checkpoint.
 - **`docs/TRAINING_REFRESH_COMPLETION_2026-04-04.md`**: Completion-state inventory showing full practical 8-bucket placement coverage and refreshed FFR artifacts for both modes.
+- **`docs/REFRESH_DEPLOYMENT_AND_ARROWVORTEX_VERIFICATION_2026-04-04.md`**: Post-refresh verification of runtime compatibility and local bundle export strategy.
 
 ## Build Information
 
-- **Version**: 0.2.31
+- **Version**: 0.2.32
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -89,6 +90,7 @@ The project is organized as follows:
 - Observed major curriculum milestone: all practical single-mode buckets now appear complete and `dance-double_Easy` became the active frontier at at least `model_08.pth`.
 - Observed continued double-mode milestone: `dance-double_Easy` advanced to at least `model_09.pth`, and the active log progressed into `Epoch 10/10` for the current double-mode bucket.
 - Observed completion milestone: all practical single/double placement buckets now show complete checkpoint sets, and refreshed FFR difficulty-model artifacts (`dance-single.p`, `dance-double.p`) are present in `data/ssc_refresh_work/ffr_models/`.
+- Observed post-refresh deployment milestone: `AutoChart` initialized successfully against the refreshed artifact roots, and bundle packaging was validated in dry-run mode via `scripts/package_refresh_bundle.py`.
 
 ### Additional models
 
