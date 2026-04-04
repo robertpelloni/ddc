@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.17] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md` capturing a later in-flight progress snapshot for the active `.ssc`-inclusive refresh run.
+
+### Changed
+- Documented that the active refresh progressed from onset training into the first practical SymNet bucket stage, with a full 5-checkpoint onset set observed and `dance-single_Easy/` created for the next phase.
+
 ## [0.2.16] - 2026-04-04
 
 ### Added
