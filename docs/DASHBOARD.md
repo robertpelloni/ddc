@@ -27,10 +27,11 @@ The project is organized as follows:
 - **`docs/REPO_HEALTH_AUDIT_2026-04-04.md`**: Remaining repository blocker/hotspot audit for merge conflicts and legacy TensorFlow references.
 - **`docs/LEGACY_SUBTREE_QUARANTINE_2026-04-04.md`**: Quarantine decision note for the final legacy-subtree conflict-marker files.
 - **`docs/SSC_REFRESH_READINESS_2026-04-04.md`**: Readiness/status audit for the prepared `.ssc`-inclusive refresh work directory.
+- **`docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`**: Launch record for the active `.ssc`-inclusive refresh training run.
 
 ## Build Information
 
-- **Version**: 0.2.14
+- **Version**: 0.2.15
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -54,7 +55,8 @@ The project is organized as follows:
 - A refreshed local extraction confirmed corpus growth from 1234 to 1254 songs and from 9241 to 9403 charts.
 - A probe run of the refreshed FFR preprocessing path confirmed approximately 1255 simfiles and 9407 serialized charts are reachable.
 - Repository-health cleanup reduced unresolved merge-conflict-marker files from 15 to 2 through successive cleanup passes.
-- Full retraining against that refreshed corpus is still pending/recommended.
+- The resume-friendly `.ssc`-inclusive refresh has now been launched against `data/ssc_refresh_work`.
+- Active runtime log: `data/ssc_refresh_training.log`
 
 ### Additional models
 

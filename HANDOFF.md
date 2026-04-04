@@ -35,9 +35,10 @@ Core training/integration work has been advanced substantially.
 - Refreshed the repo-health audit and reduced unresolved merge-conflict-marker files from 15 to 2.
 - Added `docs/LEGACY_SUBTREE_QUARANTINE_2026-04-04.md` documenting the decision to treat the final `ddc_stepmania/` conflict-marker files as quarantined legacy-subtree content.
 - Added `scripts/audit_refresh_readiness.py` and `docs/SSC_REFRESH_READINESS_2026-04-04.md` to record the exact state of the prepared `.ssc`-inclusive refresh work directory.
-- Added resume-friendly skip flags to `scripts/train_all.py` so the upcoming refresh run can be restarted safely without repeating completed work.
+- Added resume-friendly skip flags to `scripts/train_all.py` so the refresh run can be restarted safely without repeating completed work.
+- Launched the actual `.ssc`-inclusive refresh run and documented it in `docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.14`.
+- Updated versioning/documentation files to `0.2.15`.
 
 ## Key Findings
 
@@ -63,10 +64,10 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Run the resume-friendly refresh command documented in `docs/SSC_REFRESH_READINESS_2026-04-04.md`.
-2. Retrain the difficulty evaluator against the refreshed `.ssc`-inclusive loader path.
-3. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
-4. Add `dance-single_Beginner` placement training as an optional extension.
-5. Extend the difficulty evaluator to include non-tap object semantics.
-6. Create a clean ArrowVortex deploy/export path for final checkpoints.
+1. Monitor the active refresh log at `data/ssc_refresh_training.log`.
+2. Verify refreshed onset / placement checkpoint output under `data/ssc_refresh_work/models/`.
+3. Verify refreshed difficulty-model output under `data/ssc_refresh_work/ffr_models/`.
+4. After training completes, export a clean deployment-ready model bundle.
+5. Add `dance-single_Beginner` placement training as an optional extension if still desired.
+6. Extend the difficulty evaluator to include non-tap object semantics.
 7. Optionally normalize the quarantined `ddc_stepmania/` conflict-marker files in a dedicated legacy-maintenance pass later.
