@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.29] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_14_2026-04-04.md` capturing the refresh advancing beyond all practical single-mode buckets and into double-mode practical training.
+
+### Changed
+- Documented the next major monitoring milestone for the active refresh: all practical single-mode buckets appear complete (`dance-single_Easy`, `Medium`, `Hard`, `Challenge` at 10 checkpoints each) and `dance-double_Easy` became the active frontier at at least `model_08.pth`.
+
 ## [0.2.28] - 2026-04-04
 
 ### Added
