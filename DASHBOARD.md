@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.9  
+**Version:** 0.2.10  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -85,6 +85,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 #### 9. Bucket Split Delta Audit
 **Location:** `docs/BUCKET_SPLIT_DELTA_2026-04-04.md`  
 **Description:** Exact train/valid/test split delta per bucket after `.ssc`-inclusive refreshed data preparation.
+
+#### 10. Repository Health Audit
+**Location:** `docs/REPO_HEALTH_AUDIT_2026-04-04.md`  
+**Description:** Audit of remaining unresolved merge conflicts and legacy TensorFlow / `.h5` reference hotspots.
 
 ## Extraction Status
 

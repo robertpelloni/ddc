@@ -24,10 +24,11 @@ The project is organized as follows:
 - **`docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`**: Semantic audit documenting which note-object symbols actually appear in the refreshed corpus.
 - **`docs/RETRAINING_REFRESH_PLAN_2026-04-04.md`**: Step-by-step refresh plan for `.ssc`-inclusive retraining.
 - **`docs/BUCKET_SPLIT_DELTA_2026-04-04.md`**: Exact train/valid/test split deltas for every bucket after refreshed `.ssc`-inclusive preparation.
+- **`docs/REPO_HEALTH_AUDIT_2026-04-04.md`**: Remaining repository blocker/hotspot audit for merge conflicts and legacy TensorFlow references.
 
 ## Build Information
 
-- **Version**: 0.2.9
+- **Version**: 0.2.10
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 

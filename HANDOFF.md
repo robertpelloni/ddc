@@ -29,8 +29,9 @@ Core training/integration work has been advanced substantially.
 - Added note-object semantic audit tooling/report in `scripts/audit_note_objects.py` and `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`.
 - Added `docs/RETRAINING_REFRESH_PLAN_2026-04-04.md` describing the exact next-phase retraining workflow.
 - Added `scripts/compare_bucket_counts.py` and `docs/BUCKET_SPLIT_DELTA_2026-04-04.md` to quantify exact downstream split-file deltas after `.ssc`-inclusive preparation.
+- Added `scripts/audit_repo_health.py` and `docs/REPO_HEALTH_AUDIT_2026-04-04.md` to quantify remaining normalization blockers in the repository.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.9`.
+- Updated versioning/documentation files to `0.2.10`.
 
 ## Key Findings
 
@@ -56,9 +57,10 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Rerun full downstream filtering/feature extraction/training against the expanded `.ssc`-inclusive corpus.
-2. Retrain the difficulty evaluator against the refreshed `.ssc`-inclusive loader path.
-3. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
-4. Add `dance-single_Beginner` placement training as an optional extension.
-5. Extend the difficulty evaluator to include non-tap object semantics.
-6. Create a clean ArrowVortex deploy/export path for final checkpoints.
+1. Resolve the remaining merge-conflict-marker files identified in `docs/REPO_HEALTH_AUDIT_2026-04-04.md`.
+2. Rerun full downstream filtering/feature extraction/training against the expanded `.ssc`-inclusive corpus.
+3. Retrain the difficulty evaluator against the refreshed `.ssc`-inclusive loader path.
+4. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
+5. Add `dance-single_Beginner` placement training as an optional extension.
+6. Extend the difficulty evaluator to include non-tap object semantics.
+7. Create a clean ArrowVortex deploy/export path for final checkpoints.
