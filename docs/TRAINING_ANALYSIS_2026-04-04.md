@@ -154,6 +154,7 @@ A companion raw/extracted corpus audit is available at:
 - `docs/RETRAINING_REFRESH_PLAN_2026-04-04.md`
 - `docs/BUCKET_SPLIT_DELTA_2026-04-04.md`
 - `docs/REPO_HEALTH_AUDIT_2026-04-04.md`
+- `docs/LEGACY_SUBTREE_QUARANTINE_2026-04-04.md`
 
 Those reports quantify:
 

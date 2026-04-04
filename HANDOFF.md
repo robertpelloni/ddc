@@ -33,8 +33,9 @@ Core training/integration work has been advanced substantially.
 - Resolved top-level conflict-marker files in `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `GPT.md`, `LLM_INSTRUCTIONS.md`, and `setup.py`.
 - Resolved conflict-marker files in `autochart.py`, `learn/beatcalc.py`, `learn/data_gen.py`, `learn/models_v2.py`, `scripts/train_v2.py`, `scripts/smd_1_extract.sh`, and `scripts/smd_4_analyze.sh`.
 - Refreshed the repo-health audit and reduced unresolved merge-conflict-marker files from 15 to 2.
+- Added `docs/LEGACY_SUBTREE_QUARANTINE_2026-04-04.md` documenting the decision to treat the final `ddc_stepmania/` conflict-marker files as quarantined legacy-subtree content.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.12`.
+- Updated versioning/documentation files to `0.2.13`.
 
 ## Key Findings
 
@@ -60,10 +61,10 @@ Core training/integration work has been advanced substantially.
 
 ## Recommended Next Steps
 
-1. Decide whether to clean the remaining two conflict-marker files in `ddc_stepmania/learn/*` or leave them quarantined as legacy subtree content.
-2. Rerun full downstream filtering/feature extraction/training against the expanded `.ssc`-inclusive corpus.
-3. Retrain the difficulty evaluator against the refreshed `.ssc`-inclusive loader path.
-4. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
-5. Add `dance-single_Beginner` placement training as an optional extension.
-6. Extend the difficulty evaluator to include non-tap object semantics.
-7. Create a clean ArrowVortex deploy/export path for final checkpoints.
+1. Proceed with full downstream filtering/feature extraction/training against the expanded `.ssc`-inclusive corpus.
+2. Retrain the difficulty evaluator against the refreshed `.ssc`-inclusive loader path.
+3. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
+4. Add `dance-single_Beginner` placement training as an optional extension.
+5. Extend the difficulty evaluator to include non-tap object semantics.
+6. Create a clean ArrowVortex deploy/export path for final checkpoints.
+7. Optionally normalize the quarantined `ddc_stepmania/` conflict-marker files in a dedicated legacy-maintenance pass later.
