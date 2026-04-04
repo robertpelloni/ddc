@@ -40,10 +40,11 @@ The project is organized as follows:
 - **`docs/TRAINING_REFRESH_PROGRESS_10_2026-04-04.md`**: Follow-up in-flight progress snapshot showing the second practical bucket reaching at least its seventh checkpoint.
 - **`docs/TRAINING_REFRESH_PROGRESS_11_2026-04-04.md`**: Follow-up in-flight progress snapshot showing the second practical bucket moving substantially deeper into `Epoch 8/10`.
 - **`docs/TRAINING_REFRESH_PROGRESS_12_2026-04-04.md`**: Follow-up in-flight progress snapshot showing the second practical bucket reaching at least its eighth checkpoint and progressing into `Epoch 9/10`.
+- **`docs/TRAINING_REFRESH_PROGRESS_13_2026-04-04.md`**: Follow-up in-flight progress snapshot showing the second practical bucket reaching at least its ninth checkpoint and progressing into `Epoch 10/10`.
 
 ## Build Information
 
-- **Version**: 0.2.27
+- **Version**: 0.2.28
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -81,6 +82,7 @@ The project is organized as follows:
 - Observed further second-bucket milestone: `dance-single_Medium` advanced to at least `model_07.pth` while the active log progressed into `Epoch 8/10`.
 - Observed continued second-bucket milestone: `dance-single_Medium` remained the active artifact frontier while the monitored log progressed substantially deeper into the late portion of `Epoch 8/10`.
 - Observed next second-bucket milestone: `dance-single_Medium` advanced to at least `model_08.pth`, `Epoch 8/10` completed with validation output, and the active log progressed into `Epoch 9/10`.
+- Observed further second-bucket milestone: `dance-single_Medium` advanced to at least `model_09.pth`, the active log progressed into `Epoch 10/10`, and two active Python processes were visible while the run continued without interruption.
 
 ### Additional models
 
