@@ -24,7 +24,9 @@ Core training/integration work has been advanced substantially.
 - Extended `dataset/extract_json.py` to support `.ssc` files via `simfile`.
 - Validated that refreshed local extraction increases coverage from 1234 to 1254 songs and from 9241 to 9403 charts.
 - Documented the exact `.ssc`-driven corpus delta in `docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`.
-- Updated versioning/documentation files to `0.2.5`.
+- Updated the FFR difficulty-data loader so it also prefers `.ssc` over `.sm` where available.
+- Validated the refreshed FFR preprocessing path at roughly 1255 simfiles / 9407 charts.
+- Updated versioning/documentation files to `0.2.6`.
 
 ## Key Findings
 
@@ -45,8 +47,8 @@ Core training/integration work has been advanced substantially.
 ## Recommended Next Steps
 
 1. Rerun full downstream filtering/feature extraction/training against the expanded `.ssc`-inclusive corpus.
-2. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
-3. Add `dance-single_Beginner` placement training as an optional extension.
-4. Extend the difficulty evaluator to include non-tap object semantics.
-5. Create a clean ArrowVortex deploy/export path for final checkpoints.
-6. Push code/documentation/submodule changes cleanly without pushing massive generated artifacts.
+2. Retrain the difficulty evaluator against the refreshed `.ssc`-inclusive loader path.
+3. Audit actual note-object semantics for symbols such as `2`, `3`, and `M`.
+4. Add `dance-single_Beginner` placement training as an optional extension.
+5. Extend the difficulty evaluator to include non-tap object semantics.
+6. Create a clean ArrowVortex deploy/export path for final checkpoints.
