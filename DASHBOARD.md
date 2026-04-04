@@ -3,65 +3,83 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.1
-**Build Status:** Passing (Manual Verification)
-**Python Version:** 3.8+
+**Version:** 0.2.2  
+**Build Status:** Passing (manual training/integration validation)  
+**Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
+
+## Current Training State
+
+### DDC placement coverage
+The current recommended practical placement-model configuration is:
+
+- `dance-single_Easy`
+- `dance-single_Medium`
+- `dance-single_Hard`
+- `dance-single_Challenge`
+- `dance-double_Easy`
+- `dance-double_Medium`
+- `dance-double_Hard`
+- `dance-double_Challenge`
+
+An onset model was also trained from `dance-single_Hard`.
+
+### Difficulty evaluator coverage
+The difficulty evaluator was retrained from official DDR chart data and now successfully trains both:
+
+- `dance-single`
+- `dance-double`
+
+with floating-point regression outputs suitable for remapping onto arbitrary integer scales.
 
 ## Integrated Submodules
 
-The project integrates two key external repositories as git submodules to enhance functionality.
-
 | Submodule | Path | Description | Version/Commit |
 | :--- | :--- | :--- | :--- |
-| **DDC Onset** | `ddc_onset/` | Provides deep learning models for precise onset (beat) detection. Used for aligning steps to audio. | `main` branch |
-| **FFR Difficulty Model** | `ffr-difficulty-model/` | A neural network model for estimating the difficulty of stepcharts (scale 0-20+). | `main` branch |
+| **DDC Onset** | `ddc_onset/` | Provides deep learning models for precise onset (beat) detection. Used for aligning steps to audio. | tracked via submodule |
+| **FFR Difficulty Model** | `ffr-difficulty-model/` | Difficulty estimator for stepcharts, retrained in this work for both single and double mode preservation. | tracked via submodule |
 
 ## Project Structure
 
 ### Root Directory
-*   `autochart.py`: **Main CLI Tool**. Run this to generate charts.
-*   `setup.py`: Packaging script.
-*   `VERSION`: Single source of truth for project version.
-*   `requirements.txt`: Python dependencies.
-*   `LLM_INSTRUCTIONS.md`: Guidelines for AI contributors.
-*   `HANDOFF.md`: Context for handovers.
+- `autochart.py`: Main CLI tool
+- `setup.py`: Packaging script
+- `VERSION`: Single source of truth for project version
+- `requirements.txt`: Python dependencies
+- `LLM_INSTRUCTIONS.md`: Guidelines for AI contributors
+- `HANDOFF.md`: Context for handovers
 
 ### Components
 
 #### 1. Training Pipeline
-**Location:** `scripts/train_all.py`
-**Description:** Automates the retraining of DDC step placement models.
-*   **Data Prep:** Buckets songs by difficulty (Beginner -> Challenge).
-*   **Feature Extraction:** Uses `librosa` to generate mel-spectrograms.
-*   **Training:** Retrains `OnsetNet` (if needed) and `SymNet` (step placement) using TensorFlow 2.x.
+**Location:** `scripts/train_all.py`  
+**Description:** Orchestrates data prep, feature extraction, DDC training, and difficulty-model retraining.
 
-#### 2. Inference Engine (AutoChart)
-**Location:** `infer/autochart_lib.py`
-**Description:** The core tool for generating stepfiles from arbitrary audio.
-*   **Input:** MP3/WAV/OGG audio files.
-*   **Processing:**
-    *   Beat Detection (`ddc_onset`)
-    *   Step Generation (DDC `SymNet` Model)
-    *   Difficulty Rating (`ffr-difficulty-model`)
-    *   Metadata fetching (Google Custom Search API for images)
-*   **Output:** Complete `.sm` file + Audio + Album Art in a structured folder.
+#### 2. Inference Engine
+**Location:** `infer/autochart_lib.py`  
+**Description:** Core library for chart generation from arbitrary audio.
 
 #### 3. Server
-**Location:** `infer/ddc_server.py`
-**Description:** A Flask-based server that exposes the AutoChart functionality via an API, suitable for integration into ArrowVortex or other tools.
+**Location:** `infer/ddc_server.py`  
+**Description:** Flask API layer for external integration such as ArrowVortex-oriented workflows.
 
-#### 4. Submodules
-*   `ddc_onset/`: Contains separate `setup.py` and logic for onset detection.
-*   `ffr-difficulty-model/`: Contains model definitions for difficulty scoring.
+#### 4. Data/Training Analysis
+**Location:** `docs/TRAINING_ANALYSIS_2026-04-04.md`  
+**Description:** Comprehensive audit of what data was used, what was omitted, and recommended next steps.
+
+## Important Operational Notes
+
+- Large local training artifacts should not be committed casually.
+- `output_v132/` and local model exports are considered heavyweight generated artifacts.
+- If deployable model publication is desired, use a deliberate artifact strategy (Git LFS, release assets, or a dedicated model distribution channel).
 
 ## Usage Quickstart
 
-**Generate a chart for a song:**
+**Retrain from raw packs:**
 ```bash
-python autochart.py --audio path/to/song.mp3 --output output_dir/
+python scripts/train_all.py <packs_dir> <work_dir>
 ```
 
-**Retrain models:**
+**Run the server:**
 ```bash
-python scripts/train_all.py --data_dir path/to/sm_files/ --output_dir data_out/
+python infer/ddc_server.py --models_dir <models_dir> --ffr_dir <ffr_model_dir>
 ```
