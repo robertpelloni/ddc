@@ -8,17 +8,12 @@ Date: 2026-04-04
 
 ## Summary
 
-- Files containing unresolved merge-conflict markers: **15**
-- Files containing TensorFlow references: **47**
-- Files containing legacy model-path / legacy-training references: **10**
+- Files containing unresolved merge-conflict markers: **9**
+- Files containing TensorFlow references: **48**
+- Files containing legacy model-path / legacy-training references: **11**
 
 ## Unresolved Merge-Conflict Markers
 
-- `AGENTS.md`
-- `CLAUDE.md`
-- `GEMINI.md`
-- `GPT.md`
-- `LLM_INSTRUCTIONS.md`
 - `autochart.py`
 - `ddc_stepmania\learn\beatcalc.py`
 - `ddc_stepmania\learn\chart.py`
@@ -28,23 +23,22 @@ Date: 2026-04-04
 - `scripts\smd_1_extract.sh`
 - `scripts\smd_4_analyze.sh`
 - `scripts\train_v2.py`
-- `setup.py`
 
 ## TensorFlow Reference Hotspots
 
 ### `CHANGELOG.md`
 
-- 108: - **Modernization**: Ported entire codebase from Python 2.7 / TensorFlow 0.12 to Python 3.8+ / TensorFlow 2.x.
+- 12: - Added `docs/REPO_HEALTH_AUDIT_2026-04-04.md` documenting unresolved merge conflicts, TensorFlow hotspots, and legacy `.h5` / `train_v2.py` / `models_v2` references.
+- 117: - **Modernization**: Ported entire codebase from Python 2.7 / TensorFlow 0.12 to Python 3.8+ / TensorFlow 2.x.
 
 ### `DASHBOARD.md`
 
 - 8: **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.
+- 91: **Description:** Audit of remaining unresolved merge conflicts and legacy TensorFlow / `.h5` reference hotspots.
 
 ### `LLM_INSTRUCTIONS.md`
 
-- 21: *   Prioritize efficient and modern solutions (e.g., TensorFlow 2.x, Librosa).
-- 60: *   Use `tensorflow` 2.x (Keras API).
-- 65: *   Ensure `import tensorflow` and `import librosa` succeed.
+- 22: - Be aware that the repository currently contains both legacy TensorFlow-oriented paths and newer PyTorch-oriented work for the active environment.
 
 ### `PROJECT_ANALYSIS.md`
 
@@ -153,7 +147,32 @@ Date: 2026-04-04
 
 ### `docs\DASHBOARD.md`
 
-- 32: - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
+- 27: - **`docs/REPO_HEALTH_AUDIT_2026-04-04.md`**: Remaining repository blocker/hotspot audit for merge conflicts and legacy TensorFlow references.
+- 33: - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
+
+### `docs\REPO_HEALTH_AUDIT_2026-04-04.md`
+
+- 12: - Files containing TensorFlow references: **47**
+- 33: ## TensorFlow Reference Hotspots
+- 37: - 108: - **Modernization**: Ported entire codebase from Python 2.7 / TensorFlow 0.12 to Python 3.8+ / TensorFlow 2.x.
+- 41: - 8: **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.
+- 45: - 21: *   Prioritize efficient and modern solutions (e.g., TensorFlow 2.x, Librosa).
+- 46: - 60: *   Use `tensorflow` 2.x (Keras API).
+- 47: - 65: *   Ensure `import tensorflow` and `import librosa` succeed.
+- 51: - 13: *   **Code Modernization**: The codebase has been migrated from Python 2/TensorFlow 1.x to Python 3/TensorFlow 2.x (using the `compat.v1` module).
+- 55: - 4: - [x] **Modernization**: Ported to Python 3 and TensorFlow 2.x.
+- 59: - 8: import tensorflow as tf
+- 63: - 5: import tensorflow as tf
+- 67: - 1: import tensorflow as tf
+- 68: - 2: from tensorflow.keras import layers, models, Input
+- 72: - 5: import tensorflow as tf
+- 76: - 3: import tensorflow as tf
+- 80: - 7: import tensorflow as tf
+- 84: - 4: import tensorflow as tf
+- 85: - 12: # https://github.com/sherjilozair/char-rnn-tensorflow/blob/master/model.py
+- 89: - 7: import tensorflow as tf
+- 93: - 5: import tensorflow as tf
+- ... 61 more
 
 ### `infer-tf1\ddc_server.py`
 
@@ -242,7 +261,7 @@ Date: 2026-04-04
 
 ### `setup.py`
 
-- 22: 'tensorflow>=2.0',
+- 16: "tensorflow>=2.0",
 
 ### `tests\test_utils.py`
 
@@ -254,7 +273,8 @@ Date: 2026-04-04
 
 ### `CHANGELOG.md`
 
-- 121: - **Legacy Code**: Removed `infer/onset_net.py` and `infer/sym_net.py` (logic moved to `ddc_onset` submodule and `learn/models_v2.py`).
+- 12: - Added `docs/REPO_HEALTH_AUDIT_2026-04-04.md` documenting unresolved merge conflicts, TensorFlow hotspots, and legacy `.h5` / `train_v2.py` / `models_v2` references.
+- 130: - **Legacy Code**: Removed `infer/onset_net.py` and `infer/sym_net.py` (logic moved to `ddc_onset` submodule and `learn/models_v2.py`).
 
 ### `build\lib\infer\autochart_lib.py`
 
@@ -276,6 +296,30 @@ Date: 2026-04-04
 
 - 34: learn/models_v2.py
 - 45: scripts/train_v2.py
+
+### `docs\REPO_HEALTH_AUDIT_2026-04-04.md`
+
+- 27: - `learn\models_v2.py`
+- 30: - `scripts\train_v2.py`
+- 65: ### `build\lib\learn\models_v2.py`
+- 91: ### `build\lib\scripts\train_v2.py`
+- 194: ### `learn\models_v2.py`
+- 222: ### `learn\train_v2.py`
+- 232: - 27: if 'tensorflow' in lower or 'model.h5' in lower or 'train_v2.py' in lower or 'models_v2' in lower:
+- 239: ### `scripts\train_v2.py`
+- 257: - 121: - **Legacy Code**: Removed `infer/onset_net.py` and `infer/sym_net.py` (logic moved to `ddc_onset` submodule and `learn/models_v2.py`).
+- 261: - 32: from learn.models_v2 import create_sym_model
+- 262: - 128: onset_model_path = os.path.join(self.models_dir, 'onset', 'model.h5')
+- 263: - 149: model_path = os.path.join(self.models_dir, model_name, 'model.h5')
+- 264: - 202: from learn.models_v2 import SymNetV2
+- 268: - 34: run_cmd(f"python3 scripts/train_v2.py --dataset_dir {onset_data_dir} --feats_dir {feats_dir} --out_dir {os.path.join(models_dir, 'onset')} --model_type onset --epochs 5")
+- 269: - 51: run_cmd(f"python3 scripts/train_v2.py --dataset_dir {bucket_dir} --feats_dir {feats_dir} --out_dir {out_dir} --model_type sym --epochs 10")
+- 271: ### `build\lib\scripts\train_v2.py`
+- 273: - 6: from learn.models_v2 import create_onset_model, create_sym_model
+- 277: - 34: learn/models_v2.py
+- 278: - 45: scripts/train_v2.py
+- 282: - 136: onset_model_path = os.path.join(self.models_dir, "onset", "model.h5")
+- ... 9 more
 
 ### `infer\autochart_lib.py`
 

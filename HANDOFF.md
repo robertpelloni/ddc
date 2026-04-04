@@ -30,8 +30,10 @@ Core training/integration work has been advanced substantially.
 - Added `docs/RETRAINING_REFRESH_PLAN_2026-04-04.md` describing the exact next-phase retraining workflow.
 - Added `scripts/compare_bucket_counts.py` and `docs/BUCKET_SPLIT_DELTA_2026-04-04.md` to quantify exact downstream split-file deltas after `.ssc`-inclusive preparation.
 - Added `scripts/audit_repo_health.py` and `docs/REPO_HEALTH_AUDIT_2026-04-04.md` to quantify remaining normalization blockers in the repository.
+- Resolved top-level conflict-marker files in `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `GPT.md`, `LLM_INSTRUCTIONS.md`, and `setup.py`.
+- Refreshed the repo-health audit and reduced unresolved merge-conflict-marker files from 15 to 9.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.10`.
+- Updated versioning/documentation files to `0.2.11`.
 
 ## Key Findings
 
