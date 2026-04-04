@@ -21,7 +21,9 @@ Core training/integration work has been advanced substantially.
 - Fixed the submodule difficulty-training script so global NaN cleanup does not silently eliminate one mode.
 - Added detailed documentation of findings in `docs/TRAINING_ANALYSIS_2026-04-04.md`.
 - Added corpus audit tooling/report in `scripts/audit_corpus.py` and `docs/CORPUS_AUDIT_2026-04-04.md`.
-- Updated versioning/documentation files to `0.2.3`.
+- Extended `dataset/extract_json.py` to support `.ssc` files via `simfile`.
+- Validated that refreshed local extraction increases coverage from 1234 to 1254 songs and from 9241 to 9403 charts.
+- Updated versioning/documentation files to `0.2.4`.
 
 ## Key Findings
 
@@ -29,8 +31,8 @@ Core training/integration work has been advanced substantially.
 - `dance-double_Beginner` has effectively no usable dataset size in the observed official-pack corpus.
 - The DDC symbolic training path does not automatically collapse chart content to tap-only tokens.
 - The difficulty evaluator *does* currently reduce charts to tap notes only, so shock arrows/mines/holds/rolls/lifts/fakes are not fully represented there.
-- `.ssc`-only information is still outside the current extraction path.
-- Corpus audit confirmed 20 `.ssc` files exist in the raw official DDR corpus and are currently left unused.
+- `.ssc` support now exists in extraction, but the full downstream filtering/training refresh against the expanded corpus is still pending.
+- Corpus audit confirmed 20 `.ssc` files exist in the raw official DDR corpus and are now recoverable through the refreshed extractor.
 - Corpus audit confirmed extracted note vocabulary contains substantial non-binary symbols: `2`, `3`, and `M`.
 
 ## Important Repository Notes

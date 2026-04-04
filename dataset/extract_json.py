@@ -6,9 +6,82 @@ import json
 from collections import OrderedDict
 
 from smdataset.abstime import calc_note_beats_and_abs_times
-from smdataset.parse import parse_sm_txt
+from smdataset.parse import parse_sm_txt, bpms_parser, stops_parser
+
+try:
+    import simfile
+except ImportError:
+    simfile = None
 
 _ATTR_REQUIRED = ['bpms', 'notes']
+
+
+def parse_notes_body(notes_body):
+    measures = [measure.splitlines() for measure in notes_body.split(",")]
+    measures_clean = []
+    for measure in measures:
+        measure_clean = [
+            pulse
+            for pulse in measure
+            if not pulse.strip().startswith("//") and len(pulse.strip()) > 0
+        ]
+        measures_clean.append(measure_clean)
+    if len(measures_clean) > 0 and len(measures_clean[-1]) == 0:
+        measures_clean = measures_clean[:-1]
+    return measures_clean
+
+
+def extract_attrs_with_simfile(step_fp):
+    if simfile is None:
+        raise RuntimeError("simfile is required to parse .ssc files")
+
+    sim = simfile.open(step_fp, strict=False)
+
+    bpms_raw = getattr(sim, "bpms", None)
+    if not bpms_raw:
+        raise ValueError("Missing BPMs")
+
+    bpms = bpms_parser(bpms_raw)
+    stops = stops_parser(getattr(sim, "stops", "") or "")
+    offset = getattr(sim, "offset", None)
+    if offset is None:
+        offset = 0.0
+
+    notes = []
+    for chart in getattr(sim, "charts", []) or []:
+        chart_type = getattr(chart, "stepstype", None)
+        difficulty = getattr(chart, "difficulty", None)
+        meter = getattr(chart, "meter", None)
+        notes_body = getattr(chart, "notes", None)
+        if not chart_type or not difficulty or not notes_body:
+            continue
+
+        try:
+            difficulty_fine = int(str(meter).strip()) if meter is not None else 0
+        except ValueError:
+            difficulty_fine = 0
+
+        measures = parse_notes_body(notes_body)
+        notes.append(
+            (
+                chart_type,
+                getattr(chart, "credit", None) or getattr(chart, "description", None),
+                difficulty,
+                difficulty_fine,
+                [],
+                measures,
+            )
+        )
+
+    return {
+        "title": getattr(sim, "title", None),
+        "artist": getattr(sim, "artist", None),
+        "music": getattr(sim, "music", None),
+        "offset": offset,
+        "bpms": bpms,
+        "stops": stops,
+        "notes": notes,
+    }
 
 if __name__ == '__main__':
     import argparse
@@ -28,11 +101,20 @@ if __name__ == '__main__':
 
     pack_name = os.path.basename(args.packs_dir)
     pack_sm_glob = os.path.join(args.packs_dir, '**', '*.sm')
+    pack_ssc_glob = os.path.join(args.packs_dir, '**', '*.ssc')
 
     if not os.path.isdir(args.json_dir):
         os.mkdir(args.json_dir)
 
-    pack_sm_fps = sorted(glob.glob(pack_sm_glob, recursive=True))
+    pack_step_fps = {}
+    for sm_fp in sorted(glob.glob(pack_sm_glob, recursive=True)):
+        song_dir = os.path.dirname(sm_fp)
+        pack_step_fps[song_dir] = sm_fp
+    for ssc_fp in sorted(glob.glob(pack_ssc_glob, recursive=True)):
+        song_dir = os.path.dirname(ssc_fp)
+        # Prefer .ssc when available because it may contain data not present in .sm
+        pack_step_fps[song_dir] = ssc_fp
+
     pack_ezname = ez_name(pack_name)
 
     pack_outdir = os.path.join(args.json_dir, pack_ezname)
@@ -40,23 +122,24 @@ if __name__ == '__main__':
         os.mkdir(pack_outdir)
 
     sm_eznames = set()
-    for sm_fp in pack_sm_fps:
-            sm_name = os.path.split(os.path.split(sm_fp)[0])[1]
+    for step_fp in sorted(pack_step_fps.values()):
+            sm_name = os.path.split(os.path.split(step_fp)[0])[1]
             sm_ezname = ez_name(sm_name)
             if sm_ezname in sm_eznames:
-                # raise ValueError('Song name conflict: {}'.format(sm_ezname))
                 smlog.warning('Song name conflict: {}, skipping duplicate'.format(sm_ezname))
                 continue
             sm_eznames.add(sm_ezname)
 
-            with open(sm_fp, 'r', encoding='utf-8', errors='ignore') as sm_f:
-                sm_txt = sm_f.read()
-
             # parse file
             try:
-                sm_attrs = parse_sm_txt(sm_txt)
+                if step_fp.lower().endswith('.ssc'):
+                    sm_attrs = extract_attrs_with_simfile(step_fp)
+                else:
+                    with open(step_fp, 'r', encoding='utf-8', errors='ignore') as sm_f:
+                        sm_txt = sm_f.read()
+                    sm_attrs = parse_sm_txt(sm_txt)
             except ValueError as e:
-                smlog.error('{} in\n{}'.format(e, sm_fp))
+                smlog.error('{} in\n{}'.format(e, step_fp))
                 continue
             except Exception as e:
                 smlog.critical('Unhandled parse exception {}'.format(traceback.format_exc()))
@@ -72,7 +155,7 @@ if __name__ == '__main__':
                 continue
 
             # handle missing music
-            root = os.path.abspath(os.path.join(sm_fp, '..'))
+            root = os.path.abspath(os.path.join(step_fp, '..'))
             music_fp_rel = sm_attrs.get('music', '')
             if music_fp_rel is None:
                 music_fp_rel = ''
@@ -116,7 +199,7 @@ if __name__ == '__main__':
 
             out_json_fp = os.path.join(pack_outdir, '{}_{}.json'.format(pack_ezname, sm_ezname))
             out_json = OrderedDict([
-                ('sm_fp', os.path.abspath(sm_fp)),
+                ('sm_fp', os.path.abspath(step_fp)),
                 ('music_fp', os.path.abspath(music_fp)),
                 ('pack', pack_name),
                 ('title', sm_attrs.get('title')),
@@ -143,7 +226,7 @@ if __name__ == '__main__':
                 try:
                     out_f.write(json.dumps(out_json))
                 except UnicodeDecodeError:
-                    smlog.error('Unicode error in {}'.format(sm_fp))
+                    smlog.error('Unicode error in {}'.format(step_fp))
                     continue
 
             print('Parsed {} - {}: {} charts'.format(pack_name, sm_name, len(out_json['charts'])))

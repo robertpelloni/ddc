@@ -23,7 +23,7 @@ The project is organized as follows:
 
 ## Build Information
 
-- **Version**: 0.2.3
+- **Version**: 0.2.4
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -39,6 +39,12 @@ The project is organized as follows:
 - `dance-double_Medium`
 - `dance-double_Hard`
 - `dance-double_Challenge`
+
+### Extraction status
+
+- `dataset/extract_json.py` now supports `.ssc` as well as `.sm`.
+- A refreshed local extraction confirmed corpus growth from 1234 to 1254 songs and from 9241 to 9403 charts.
+- Full retraining against that refreshed corpus is still pending/recommended.
 
 ### Additional models
 

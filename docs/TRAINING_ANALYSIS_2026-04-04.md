@@ -23,6 +23,8 @@ This repository was prepared and trained against the official DDR pack download 
 
 This document records what data was used, what was not used, what was only partially used, the practical limits of the current pipeline, and the recommended next steps.
 
+Update note: after this report was first drafted, the extractor was extended to support `.ssc` files as well as `.sm`. A refreshed corpus audit is captured in `docs/CORPUS_AUDIT_2026-04-04.md`. Full retraining against the refreshed `.ssc`-inclusive corpus remains the next recommended training step.
+
 ---
 
 ## Download Sources Used
@@ -355,9 +357,9 @@ Add a report script that counts, per bucket:
 
 This will convert assumptions into measured coverage.
 
-## Priority 2: extend extraction beyond `.sm`
+## Priority 2: retrain against the refreshed `.ssc`-inclusive extraction
 
-Support `.ssc` input where available so richer modern chart metadata is not lost.
+The extractor now supports `.ssc` input where available. The next step is to rerun filtering/feature extraction/training so the newly recovered songs are incorporated into model training.
 
 ## Priority 3: add Beginner placement models where practical
 
