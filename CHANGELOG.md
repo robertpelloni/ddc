@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.16] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_2026-04-04.md` documenting an in-flight progress snapshot for the active `.ssc`-inclusive refresh run.
+
+### Changed
+- Recorded the first observed runtime milestone for the active refresh: onset training had advanced into epoch 4/5 and produced initial checkpoints under `data/ssc_refresh_work/models/onset/`.
+
 ## [0.2.15] - 2026-04-04
 
 ### Added

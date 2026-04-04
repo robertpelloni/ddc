@@ -28,10 +28,11 @@ The project is organized as follows:
 - **`docs/LEGACY_SUBTREE_QUARANTINE_2026-04-04.md`**: Quarantine decision note for the final legacy-subtree conflict-marker files.
 - **`docs/SSC_REFRESH_READINESS_2026-04-04.md`**: Readiness/status audit for the prepared `.ssc`-inclusive refresh work directory.
 - **`docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`**: Launch record for the active `.ssc`-inclusive refresh training run.
+- **`docs/TRAINING_REFRESH_PROGRESS_2026-04-04.md`**: In-flight progress snapshot for the active refresh run.
 
 ## Build Information
 
-- **Version**: 0.2.15
+- **Version**: 0.2.16
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -57,6 +58,7 @@ The project is organized as follows:
 - Repository-health cleanup reduced unresolved merge-conflict-marker files from 15 to 2 through successive cleanup passes.
 - The resume-friendly `.ssc`-inclusive refresh has now been launched against `data/ssc_refresh_work`.
 - Active runtime log: `data/ssc_refresh_training.log`
+- Observed in-flight milestone: onset training advanced into epoch 4/5 and initial onset checkpoints appeared in the refresh work directory.
 
 ### Additional models
 
