@@ -30,10 +30,11 @@ The project is organized as follows:
 - **`docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`**: Launch record for the active `.ssc`-inclusive refresh training run.
 - **`docs/TRAINING_REFRESH_PROGRESS_2026-04-04.md`**: In-flight progress snapshot for the active refresh run.
 - **`docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md`**: Later in-flight progress snapshot showing transition from onset into bucketed placement training.
+- **`docs/TRAINING_REFRESH_PROGRESS_3_2026-04-04.md`**: Later in-flight progress snapshot showing the first practical bucket checkpoint being produced.
 
 ## Build Information
 
-- **Version**: 0.2.17
+- **Version**: 0.2.18
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -61,6 +62,7 @@ The project is organized as follows:
 - Active runtime log: `data/ssc_refresh_training.log`
 - Observed in-flight milestone: onset training advanced through its checkpoint set in the refresh work directory.
 - Observed later milestone: the refresh moved into practical SymNet bucket training and created the first bucket output directory.
+- Observed next milestone: the first practical bucket emitted `dance-single_Easy/model_01.pth`.
 
 ### Additional models
 

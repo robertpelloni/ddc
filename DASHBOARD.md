@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.17  
+**Version:** 0.2.18  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -110,6 +110,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md`  
 **Description:** Later runtime snapshot showing onset checkpoint completion and transition into practical bucketed SymNet training.
 
+#### 16. Training Refresh Progress Snapshot #3
+**Location:** `docs/TRAINING_REFRESH_PROGRESS_3_2026-04-04.md`  
+**Description:** Later runtime snapshot showing the first practical SymNet bucket checkpoint being produced.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -121,6 +125,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Active runtime log: `data/ssc_refresh_training.log`
 - Observed in-flight milestone: onset training completed its visible 5-checkpoint set under `data/ssc_refresh_work/models/onset/`.
 - Observed later in-flight milestone: the refresh transitioned into practical SymNet bucket training and created `data/ssc_refresh_work/models/dance-single_Easy/`.
+- Observed next in-flight milestone: `data/ssc_refresh_work/models/dance-single_Easy/model_01.pth` appeared, confirming practical bucket checkpoint production.
 
 ## Important Operational Notes
 

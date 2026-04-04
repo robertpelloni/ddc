@@ -39,8 +39,9 @@ Core training/integration work has been advanced substantially.
 - Launched the actual `.ssc`-inclusive refresh run and documented it in `docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`.
 - Captured an in-flight runtime progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_2026-04-04.md`, including initial onset checkpoint production.
 - Captured a later progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_2_2026-04-04.md`, showing onset checkpoint-set completion and transition into the first practical SymNet bucket stage.
+- Captured a further progress snapshot in `docs/TRAINING_REFRESH_PROGRESS_3_2026-04-04.md`, showing the first practical bucket checkpoint (`dance-single_Easy/model_01.pth`) being produced.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.17`.
+- Updated versioning/documentation files to `0.2.18`.
 
 ## Key Findings
 
@@ -67,7 +68,7 @@ Core training/integration work has been advanced substantially.
 ## Recommended Next Steps
 
 1. Continue monitoring the active refresh log at `data/ssc_refresh_training.log`.
-2. Verify completed checkpoint output appears for `dance-single_Easy` and subsequent practical 8-bucket directories under `data/ssc_refresh_work/models/`.
+2. Verify additional checkpoint accumulation for `dance-single_Easy` and subsequent practical 8-bucket directories under `data/ssc_refresh_work/models/`.
 3. Verify refreshed difficulty-model output eventually appears under `data/ssc_refresh_work/ffr_models/`.
 4. After training completes, document final artifact inventory and export a clean deployment-ready model bundle.
 5. Add `dance-single_Beginner` placement training as an optional extension if still desired.
