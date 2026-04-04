@@ -38,10 +38,11 @@ The project is organized as follows:
 - **`docs/TRAINING_REFRESH_PROGRESS_8_2026-04-04.md`**: Major in-flight progress snapshot showing the first practical bucket appearing complete and the second practical bucket already in progress.
 - **`docs/TRAINING_REFRESH_PROGRESS_9_2026-04-04.md`**: Follow-up in-flight progress snapshot showing continued progress deeper into the second practical bucket.
 - **`docs/TRAINING_REFRESH_PROGRESS_10_2026-04-04.md`**: Follow-up in-flight progress snapshot showing the second practical bucket reaching at least its seventh checkpoint.
+- **`docs/TRAINING_REFRESH_PROGRESS_11_2026-04-04.md`**: Follow-up in-flight progress snapshot showing the second practical bucket moving substantially deeper into `Epoch 8/10`.
 
 ## Build Information
 
-- **Version**: 0.2.25
+- **Version**: 0.2.26
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 
@@ -77,6 +78,7 @@ The project is organized as follows:
 - Observed major milestone: `dance-single_Easy` reached a full observed 10-checkpoint set and `dance-single_Medium` advanced to at least `model_06.pth`, indicating the refresh has moved beyond the first practical bucket.
 - Observed continued second-bucket milestone: the active log progressed substantially deeper into `Epoch 7/10` while `dance-single_Medium` remained the newest artifact frontier by checkpoint timestamp.
 - Observed further second-bucket milestone: `dance-single_Medium` advanced to at least `model_07.pth` while the active log progressed into `Epoch 8/10`.
+- Observed continued second-bucket milestone: `dance-single_Medium` remained the active artifact frontier while the monitored log progressed substantially deeper into the late portion of `Epoch 8/10`.
 
 ### Additional models
 
