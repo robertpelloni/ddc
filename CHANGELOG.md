@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.6] - 2026-04-04
+
+### Added
+- Documented FFR `.ssc`-inclusive loader expansion and validation counts in `docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`.
+
+### Changed
+- Updated the FFR difficulty-data loader to prefer `.ssc` over `.sm` within each song directory.
+- Cleaned `learn/extract_feats_v2.py` so the refreshed feature-extraction path is syntactically valid again after prior merge-conflict residue.
+- Validated the refreshed FFR preprocessing path at approximately **1255 simfiles** and **9407 serialized charts**.
+
 ## [0.2.5] - 2026-04-04
 
 ### Added

@@ -4,7 +4,7 @@ Date: 2026-04-04
 
 ## Purpose
 
-This document summarizes the practical corpus expansion unlocked by adding `.ssc` extraction support to `dataset/extract_json.py` and fixing the `scripts/prepare_data.py` merge-conflict issue so the downstream data-prep path can be rerun cleanly.
+This document summarizes the practical corpus expansion unlocked by adding `.ssc` extraction support to `dataset/extract_json.py`, extending the FFR difficulty-data loader to prefer `.ssc` over `.sm` where available, and fixing the `scripts/prepare_data.py` merge-conflict issue so the downstream data-prep path can be rerun cleanly.
 
 This is a delta-focused companion to:
 
@@ -121,6 +121,19 @@ Practical significance:
 
 ---
 
+## Difficulty-evaluator pipeline expansion
+
+The FFR difficulty-data loader was also updated to support `.ssc` by preferring `.ssc` over `.sm` within each song directory.
+
+Validation probe result:
+
+- processed simfiles: **1255**
+- serialized charts for difficulty-evaluator preprocessing: **9407**
+
+This confirms the difficulty-evaluator data path can now see the same newly recovered `.ssc` songs instead of remaining `.sm`-only.
+
+---
+
 ## What is still pending
 
 Although extraction coverage improved, a full downstream model refresh against the expanded corpus is still the next major step.
@@ -131,7 +144,7 @@ That means rerunning:
 2. feature extraction
 3. onset training
 4. 8-bucket SymNet training
-5. difficulty-evaluator retraining
+5. difficulty-evaluator retraining against the refreshed `.ssc`-inclusive loader
 
 Until that is done, the current trained model artifacts still reflect the pre-`.ssc` extraction corpus.
 

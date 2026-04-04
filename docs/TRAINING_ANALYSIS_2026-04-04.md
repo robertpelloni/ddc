@@ -23,7 +23,7 @@ This repository was prepared and trained against the official DDR pack download 
 
 This document records what data was used, what was not used, what was only partially used, the practical limits of the current pipeline, and the recommended next steps.
 
-Update note: after this report was first drafted, the extractor was extended to support `.ssc` files as well as `.sm`. A refreshed corpus audit is captured in `docs/CORPUS_AUDIT_2026-04-04.md`. Full retraining against the refreshed `.ssc`-inclusive corpus remains the next recommended training step.
+Update note: after this report was first drafted, the extractor was extended to support `.ssc` files as well as `.sm`, and the FFR difficulty-data loader was also updated to prefer `.ssc` over `.sm` where available. A refreshed corpus audit is captured in `docs/CORPUS_AUDIT_2026-04-04.md`, and the measured delta is summarized in `docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`. Full retraining against the refreshed `.ssc`-inclusive corpus remains the next recommended training step.
 
 ---
 
