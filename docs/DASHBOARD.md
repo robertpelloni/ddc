@@ -21,10 +21,11 @@ The project is organized as follows:
 - **`docs/TRAINING_ANALYSIS_2026-04-04.md`**: Detailed report of training coverage, omissions, findings, and recommendations.
 - **`docs/CORPUS_AUDIT_2026-04-04.md`**: Detailed report of `.sm`/`.ssc` inventory and note-symbol coverage in the extracted corpus.
 - **`docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`**: Delta report quantifying the exact increase in songs/charts/bucket coverage from `.ssc` support.
+- **`docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`**: Semantic audit documenting which note-object symbols actually appear in the refreshed corpus.
 
 ## Build Information
 
-- **Version**: 0.2.6
+- **Version**: 0.2.7
 - **Build Date**: 2026-04-04
 - **Environment Notes**: Local training work was adapted to PyTorch for the active environment; legacy TensorFlow-oriented paths remain in the repository.
 

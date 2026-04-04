@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.7] - 2026-04-04
+
+### Added
+- Added `scripts/audit_note_objects.py` for repeatable note-object semantic audits against extracted JSON charts.
+- Added `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md` documenting observed note-object semantics in the refreshed official DDR corpus.
+
+### Changed
+- Documented that the refreshed corpus contains taps, hold-heads, tails, and mines, while no roll-head, attack, fake, keysound, or lift symbols were observed in the audited official-pack extraction.
+- Documented per-bucket semantic coverage so future difficulty-model work can target hold/mine-aware features more precisely.
+
 ## [0.2.6] - 2026-04-04
 
 ### Added
