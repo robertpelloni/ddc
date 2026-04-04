@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.28  
+**Version:** 0.2.29  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -154,6 +154,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_PROGRESS_13_2026-04-04.md`  
 **Description:** Follow-up runtime snapshot showing the second practical bucket advancing to at least its ninth checkpoint and entering `Epoch 10/10`.
 
+#### 27. Training Refresh Progress Snapshot #14
+**Location:** `docs/TRAINING_REFRESH_PROGRESS_14_2026-04-04.md`  
+**Description:** Major runtime snapshot showing practical single-mode completion and transition into double-mode practical training.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -176,6 +180,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Observed continued second-bucket execution: `dance-single_Medium` remained the active artifact frontier while the monitored log progressed substantially deeper into the late portion of `Epoch 8/10`.
 - Observed next second-bucket milestone: `dance-single_Medium` advanced to at least `model_08.pth`, `Epoch 8/10` completed with validation output, and the active log progressed into `Epoch 9/10`.
 - Observed further second-bucket milestone: `dance-single_Medium` advanced to at least `model_09.pth`, the active log progressed into `Epoch 10/10`, and two active Python processes were visible while the run continued without interruption.
+- Observed major curriculum milestone: all practical single-mode buckets now appear complete and `dance-double_Easy` became the active frontier, advancing to at least `model_08.pth`.
 
 ## Important Operational Notes
 
