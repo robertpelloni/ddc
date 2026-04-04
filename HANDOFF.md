@@ -27,7 +27,9 @@ Core training/integration work has been advanced substantially.
 - Updated the FFR difficulty-data loader so it also prefers `.ssc` over `.sm` where available.
 - Validated the refreshed FFR preprocessing path at roughly 1255 simfiles / 9407 charts.
 - Added note-object semantic audit tooling/report in `scripts/audit_note_objects.py` and `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`.
-- Updated versioning/documentation files to `0.2.7`.
+- Added `docs/RETRAINING_REFRESH_PLAN_2026-04-04.md` describing the exact next-phase retraining workflow.
+- Replaced the conflicted root `README.md` with a clean current-state overview.
+- Updated versioning/documentation files to `0.2.8`.
 
 ## Key Findings
 
