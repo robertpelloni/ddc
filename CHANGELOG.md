@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.10] - 2026-04-04
+
+### Added
+- Added `scripts/audit_repo_health.py` for repeatable repository-health auditing.
+- Added `docs/REPO_HEALTH_AUDIT_2026-04-04.md` documenting unresolved merge conflicts, TensorFlow hotspots, and legacy `.h5` / `train_v2.py` / `models_v2` references.
+
+### Changed
+- Documented the remaining blocker surface that should be cleaned up before considering the repo fully normalized after the PyTorch-oriented training refresh work.
+
 ## [0.2.9] - 2026-04-04
 
 ### Added

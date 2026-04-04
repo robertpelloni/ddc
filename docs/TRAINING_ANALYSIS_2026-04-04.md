@@ -153,6 +153,7 @@ A companion raw/extracted corpus audit is available at:
 - `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`
 - `docs/RETRAINING_REFRESH_PLAN_2026-04-04.md`
 - `docs/BUCKET_SPLIT_DELTA_2026-04-04.md`
+- `docs/REPO_HEALTH_AUDIT_2026-04-04.md`
 
 Those reports quantify:
 
