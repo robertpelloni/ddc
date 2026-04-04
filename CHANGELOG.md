@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.24] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_PROGRESS_9_2026-04-04.md` capturing continued in-flight progress after the refresh moved into the second practical bucket.
+
+### Changed
+- Documented the next monitoring milestone for the active refresh: the run remained alive, the active log progressed substantially deeper into `Epoch 7/10`, and artifact recency still indicated `dance-single_Medium` as the current active practical bucket frontier.
+
 ## [0.2.23] - 2026-04-04
 
 ### Added
