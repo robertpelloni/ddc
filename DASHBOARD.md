@@ -3,7 +3,7 @@
 This dashboard provides an overview of the integrated components, submodules, and current versioning of the Dance Dance Convolution project.
 
 ## Project Status
-**Version:** 0.2.15  
+**Version:** 0.2.16  
 **Build Status:** Passing (manual training/integration validation)  
 **Python Runtime Reality:** Current repository training work was adapted to PyTorch for the local environment, while legacy TensorFlow-oriented code paths still exist in the codebase.  
 
@@ -102,6 +102,10 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 **Location:** `docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md`  
 **Description:** Records the actual launch of the `.ssc`-inclusive refresh training run and where to monitor progress.
 
+#### 14. Training Refresh Progress Snapshot
+**Location:** `docs/TRAINING_REFRESH_PROGRESS_2026-04-04.md`  
+**Description:** In-flight runtime snapshot showing the active refresh progressing and producing initial checkpoints.
+
 ## Extraction Status
 
 - `dataset/extract_json.py` now supports both `.sm` and `.ssc` inputs.
@@ -111,6 +115,7 @@ with floating-point regression outputs suitable for remapping onto arbitrary int
 - Repository-health cleanup reduced unresolved merge-conflict-marker files from **15** to **2** through successive cleanup passes.
 - The resume-friendly `.ssc`-inclusive refresh has now been launched against `data/ssc_refresh_work`.
 - Active runtime log: `data/ssc_refresh_training.log`
+- Observed in-flight milestone: onset training progressed into epoch 4/5 and produced initial checkpoints under `data/ssc_refresh_work/models/onset/`.
 
 ## Important Operational Notes
 
