@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.31] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_COMPLETION_2026-04-04.md` capturing the first full completion-state inventory for the `.ssc`-inclusive refresh run.
+
+### Changed
+- Documented the key completion milestone for the active refresh: all practical single/double placement buckets now show complete checkpoint sets, and refreshed floating-point FFR artifacts were produced for both `dance-single` and `dance-double`.
+
 ## [0.2.30] - 2026-04-04
 
 ### Added
