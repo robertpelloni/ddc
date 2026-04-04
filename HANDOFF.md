@@ -26,7 +26,8 @@ Core training/integration work has been advanced substantially.
 - Documented the exact `.ssc`-driven corpus delta in `docs/SSC_EXPANSION_ANALYSIS_2026-04-04.md`.
 - Updated the FFR difficulty-data loader so it also prefers `.ssc` over `.sm` where available.
 - Validated the refreshed FFR preprocessing path at roughly 1255 simfiles / 9407 charts.
-- Updated versioning/documentation files to `0.2.6`.
+- Added note-object semantic audit tooling/report in `scripts/audit_note_objects.py` and `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`.
+- Updated versioning/documentation files to `0.2.7`.
 
 ## Key Findings
 
@@ -37,6 +38,12 @@ Core training/integration work has been advanced substantially.
 - `.ssc` support now exists in extraction, but the full downstream filtering/training refresh against the expanded corpus is still pending.
 - Corpus audit confirmed 20 `.ssc` files exist in the raw official DDR corpus and are now recoverable through the refreshed extractor.
 - Corpus audit confirmed extracted note vocabulary contains substantial non-binary symbols: `2`, `3`, and `M`.
+- Note-object semantic audit now documents the strongest supported interpretation of observed symbols:
+  - `1` = tap
+  - `2` = hold head
+  - `3` = tail
+  - `M` = mine
+  - no observed `4`, `A`, `F`, `K`, or `L` in the refreshed official-pack extraction
 
 ## Important Repository Notes
 
