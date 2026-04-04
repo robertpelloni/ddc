@@ -22,6 +22,7 @@ Measured corpus improvements already documented elsewhere:
 - songs: **1234 -> 1254**
 - charts: **9241 -> 9403**
 - every practical single/double Easy/Medium/Hard/Challenge bucket increased
+- exact split-file deltas are documented in `docs/BUCKET_SPLIT_DELTA_2026-04-04.md`
 - additional hold-head / tail / mine-bearing rows were recovered
 
 That means the current trained model artifacts are now behind the best available extracted dataset.

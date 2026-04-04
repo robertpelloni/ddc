@@ -28,8 +28,9 @@ Core training/integration work has been advanced substantially.
 - Validated the refreshed FFR preprocessing path at roughly 1255 simfiles / 9407 charts.
 - Added note-object semantic audit tooling/report in `scripts/audit_note_objects.py` and `docs/NOTE_OBJECT_SEMANTICS_2026-04-04.md`.
 - Added `docs/RETRAINING_REFRESH_PLAN_2026-04-04.md` describing the exact next-phase retraining workflow.
+- Added `scripts/compare_bucket_counts.py` and `docs/BUCKET_SPLIT_DELTA_2026-04-04.md` to quantify exact downstream split-file deltas after `.ssc`-inclusive preparation.
 - Replaced the conflicted root `README.md` with a clean current-state overview.
-- Updated versioning/documentation files to `0.2.8`.
+- Updated versioning/documentation files to `0.2.9`.
 
 ## Key Findings
 
