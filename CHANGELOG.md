@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.15] - 2026-04-04
+
+### Added
+- Added `docs/TRAINING_REFRESH_LAUNCH_2026-04-04.md` documenting the actual launch of the `.ssc`-inclusive refresh training run.
+
+### Changed
+- Kicked off the resume-friendly `.ssc`-inclusive training refresh against `data/ssc_refresh_work` and documented its initial runtime state/log path.
+
 ## [0.2.14] - 2026-04-04
 
 ### Added
