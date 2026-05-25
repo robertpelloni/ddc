@@ -5,3 +5,8 @@ data/
 all_jsons.txt
 output_v132/
 models_v3/
+# Large model/release files
+DDC_FULL_RELEASE.zip
+DDC_FULL_RELEASE/
+*.pth
+*.p
