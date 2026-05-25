@@ -110,6 +110,96 @@ def add_header(r):
     r.headers['Access-Control-Expose-Headers'] = '*'
     return r
 
+
+import tempfile
+
+from flask import Flask, jsonify, request, send_from_directory, send_file
+
+_FRONTEND_DIST_DIR = 'frontend'
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder=_FRONTEND_DIST_DIR)
+
+
+@app.route('/')
+def index():
+    return send_from_directory(_FRONTEND_DIST_DIR, 'index.html')
+
+
+@app.route('/choreograph', methods=['POST'])
+def choreograph():
+    uploaded_file = request.files.get('audio_file')
+    if uploaded_file is None or len(uploaded_file.filename) == 0:
+        return 'Audio file required', 400
+    try:
+        uploaded_file_ext = os.path.splitext(uploaded_file.filename)[1]
+    except:
+        uploaded_file_ext = ''
+
+    song_artist = request.form.get('song_artist', '')[:1024]
+    song_title = request.form.get('song_title', '')[:1024]
+    diff_coarse = request.form.get('diff_coarse')
+    if diff_coarse is None:
+        return 'Need to specify difficulty', 400
+    if diff_coarse not in _DIFFS:
+        return 'Invalid difficulty specified', 400
+
+    out_dir = tempfile.mkdtemp()
+    with tempfile.NamedTemporaryFile(suffix='.zip') as z:
+        song_id = uuid.uuid4()
+
+        song_fp = os.path.join(out_dir, '{}{}'.format(str(song_id), uploaded_file_ext))
+        uploaded_file.save(song_fp)
+
+        try:
+            create_chart_dir(
+                song_artist, song_title,
+                song_fp,
+                NORM, ANALYZERS,
+                SESS,
+                SP_MODEL, ARGS.sp_batch_size,
+                [diff_coarse],
+                SS_MODEL, IDX_TO_LABEL,
+                out_dir)
+        except CreateChartException as e:
+            if str(e).startswith('Invalid audio file'):
+                return 'Invalid audio file', 400
+            shutil.rmtree(out_dir)
+            print e
+            return 'Unknown error', 500
+        except Exception as e:
+            shutil.rmtree(out_dir)
+            print e
+            return 'Unknown error', 500
+
+        print 'Creating zip {}'.format(z.name)
+        with zipfile.ZipFile(z.name, 'w', zipfile.ZIP_DEFLATED) as f:
+            for fn in os.listdir(out_dir):
+                f.write(
+                    os.path.join(out_dir, fn),
+                    os.path.join(
+                        _PACK_NAME,
+                        str(song_id),
+                        '{}{}'.format(str(song_id), os.path.splitext(fn)[1])))
+
+        shutil.rmtree(out_dir)
+
+        return send_file(
+                z.name,
+                as_attachment=True,
+                attachment_filename='{}.zip'.format(song_id))
+
+
+@app.after_request
+def add_header(r):
+    r.headers['Access-Control-Allow-Origin'] = '*'
+    r.headers['Access-Control-Allow-Headers'] = '*'
+    r.headers['Access-Control-Allow-Methods'] = '*'
+    r.headers['Access-Control-Expose-Headers'] = '*'
+    return r
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--models_dir', type=str, required=True, help='Path to DDC v2 models')
