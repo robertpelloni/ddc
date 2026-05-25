@@ -72,9 +72,8 @@ def main():
             run_cmd(f"{sys.executable} scripts/train_pt.py --dataset_dir {onset_data_dir} --feats_dir {feats_dir} --out_dir {onset_out_dir} --model_type onset --epochs 5")
 
     buckets = []
-    # User requested 8 training runs (Easy, Medium, Hard, Challenge for Single/Double)
-    # This excludes 'Beginner'.
-    difficulties = ['Easy', 'Medium', 'Hard', 'Challenge']
+    # User requested all training runs including Beginner (Beginner, Easy, Medium, Hard, Challenge for Single/Double)
+    difficulties = ['Beginner', 'Easy', 'Medium', 'Hard', 'Challenge']
     types = ['dance-single', 'dance-double']
     for t in types:
         for d in difficulties:

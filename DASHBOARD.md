@@ -10,18 +10,22 @@ This dashboard provides an overview of the integrated components, submodules, an
 ## Current Training State
 
 ### DDC placement coverage
-The current recommended practical placement-model configuration is:
+The current recommended practical placement-model configuration is fully trained for all 10 difficulty buckets, ensuring a full public release capability:
 
+- `dance-single_Beginner`
 - `dance-single_Easy`
 - `dance-single_Medium`
 - `dance-single_Hard`
 - `dance-single_Challenge`
+- `dance-double_Beginner`
 - `dance-double_Easy`
 - `dance-double_Medium`
 - `dance-double_Hard`
 - `dance-double_Challenge`
 
 An onset model was also trained from `dance-single_Hard`.
+
+A full public release bundle has been generated: `DDC_FULL_RELEASE.zip`.
 
 ### Difficulty evaluator coverage
 The difficulty evaluator was retrained from official DDR chart data and now successfully trains both:

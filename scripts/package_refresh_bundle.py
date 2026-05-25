@@ -38,10 +38,12 @@ from pathlib import Path
 from typing import Dict, List
 
 PRACTICAL_BUCKETS = [
+    "dance-single_Beginner",
     "dance-single_Easy",
     "dance-single_Medium",
     "dance-single_Hard",
     "dance-single_Challenge",
+    "dance-double_Beginner",
     "dance-double_Easy",
     "dance-double_Medium",
     "dance-double_Hard",
