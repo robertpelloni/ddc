@@ -1,1 +1,0 @@
-lib/ddc/train_sanity/short.json
